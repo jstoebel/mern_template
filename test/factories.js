@@ -1,8 +1,8 @@
-var models = require('require.all')('../models')
-var fg = require('factory-girl');
+let models = require('require.all')('../models');
+let fg = require('factory-girl');
 
-var adapter = new fg.MongooseAdapter();
-var factory = fg.factory
+let adapter = new fg.MongooseAdapter();
+let factory = fg.factory;
 factory.setAdapter(adapter);
 
 factory.define('user', models.User, {

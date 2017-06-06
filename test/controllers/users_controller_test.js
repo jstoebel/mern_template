@@ -1,8 +1,8 @@
-var request = require('supertest');
-var app = require('../../app.js');
+let request = require('supertest');
+let app = require('../../app.js');
 
 describe('GET /', () => {
-  it('should return 200 OK', done => {
+  it('should return 200 OK', (done) => {
     request(app)
       .get('/')
       .expect(200, done);
@@ -10,7 +10,7 @@ describe('GET /', () => {
 });
 
 describe('GET /login', () => {
-  it('should return 200 OK', done => {
+  it('should return 200 OK', (done) => {
     request(app)
       .get('/login')
       .expect(200, done);
@@ -18,7 +18,7 @@ describe('GET /login', () => {
 });
 
 describe('GET /signup', () => {
-  it('should return 200 OK', done => {
+  it('should return 200 OK', (done) => {
     request(app)
       .get('/signup')
       .expect(200, done);
@@ -26,7 +26,7 @@ describe('GET /signup', () => {
 });
 
 describe('GET /contact', () => {
-  it('should return 200 OK', done => {
+  it('should return 200 OK', (done) => {
     request(app)
       .get('/contact')
       .expect(200, done);
@@ -34,7 +34,7 @@ describe('GET /contact', () => {
 });
 
 describe('GET /random-url', () => {
-  it('should return 404', done => {
+  it('should return 404', (done) => {
     request(app)
       .get('/random-url')
       .expect(404, done);
