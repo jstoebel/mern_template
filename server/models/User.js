@@ -31,6 +31,7 @@ let userSchema = new mongoose.Schema({
  * Password hash middleware.
  */
 userSchema.pre('save', function(next) {
+  // eslint-disable-next-line no-invalid-this
   let user = this;
   if (!user.isModified('password')) {
     return next();

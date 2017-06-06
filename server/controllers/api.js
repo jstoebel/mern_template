@@ -143,6 +143,7 @@ exports.getScraping = function(req, res, next) {
     let $ = cheerio.load(body);
     let links = [];
     $('.title a[href^="http"], a[href^="https"]').each(function() {
+      // eslint-disable-next-line no-invalid-this
       links.push($(this));
     });
     res.render('api/scraping', {

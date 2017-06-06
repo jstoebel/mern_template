@@ -1,18 +1,20 @@
 module.exports = {
     "extends": ["eslint:recommended", "google"],
-    "parserOptions": {
-        "ecmaVersion": 6
-    },
-    
     "rules": {
-      "max-len": ["error", {"ignoreStrings": true}]
+      "max-len": ["error", {"ignoreStrings": true}],
+      "react/jsx-uses-vars": "error",
+      "react/jsx-uses-react": "error"
     },
-
     "parserOptions": {
+        "ecmaVersion": 6,
         "sourceType": "module",
+        "ecmaFeatures": {
+          "jsx": true
+        },
     },
     "env": {
       "browser": true,
       "node": true
-    }
+    },
+    "plugins": ["react"]
 };
