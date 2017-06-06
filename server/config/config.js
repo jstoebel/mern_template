@@ -3,21 +3,26 @@
 
 // eslint-disable-next-line no-undef
 
+import dotenv from 'dotenv';
+dotenv.load();
+let currentEnv;
+
 if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'test') {
-  let dotenv = require('dotenv');
-  dotenv.load();
-  exports.currentEnv = process.env.NODE_ENV;
+  currentEnv = process.env.NODE_ENV;
 } else {
-  exports.currentEnv = 'production';
+  currentEnv = 'production';
 }
 
-exports.appName = 'mern_template';
+const appName = 'mern_template';
 
-let dbName = exports.appName.toLowerCase()+'_'+exports.currentEnv;
+let dbName = `${appName.toLowerCase()}_${currentEnv}`;
+
 // either Heroku's URL or create my own
-exports.db = {URL: process.env.MONGODB_URI ||
-    'mongodb://localhost:27017/' + dbName,
+const db = {URL: process.env.MONGODB_URI ||
+    `mongodb://localhost:27017/${dbName}`,
   name: dbName,
 };
 
-exports.secret = process.env.SESSION_SECRET;
+const secret = process.env.SESSION_SECRET;
+
+export {currentEnv, appName, db, secret};

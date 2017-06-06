@@ -1,16 +1,15 @@
-const _ = require('lodash');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const TwitterStrategy = require('passport-twitter').Strategy;
+import _ from 'lodash';
+import passport from 'passport';
+import {Strategy as LocalStrategy} from 'passport-local';
+import {Strategy as TwitterStrategy} from 'passport-twitter';
+import User from '../models/User';
 
-const User = require('../models/User');
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
+passport.serializeUser(({id}, done) => {
+  done(null, id);
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
     done(err, user);
   });
 });
@@ -20,12 +19,12 @@ passport.deserializeUser(function(id, done) {
  */
 passport.use(
   new LocalStrategy({usernameField: 'email'},
-  function(email, password, done) {
-    User.findOne({email: email.toLowerCase()}, function(err, user) {
+  (email, password, done) => {
+    User.findOne({email: email.toLowerCase()}, (err, user) => {
       if (!user) {
-        return done(null, false, {msg: 'Email ' + email + ' not found.'});
+        return done(null, false, {msg: `Email ${email} not found.`});
       }
-      user.comparePassword(password, function(err, isMatch) {
+      user.comparePassword(password, (err, isMatch) => {
         if (isMatch) {
           return done(null, user);
         } else {
@@ -61,9 +60,11 @@ passport.use(new TwitterStrategy({
   consumerSecret: process.env.TWITTER_SECRET,
   callbackURL: '/auth/twitter/callback',
   passReqToCallback: true,
-}, function(req, accessToken, tokenSecret, profile, done) {
+}, (
+    req, accessToken, tokenSecret, {id, displayName, _json, username}, done
+  ) => {
   if (req.user) {
-    User.findOne({twitter: profile.id}, function(err, existingUser) {
+    User.findOne({twitter: id}, (err, existingUser) => {
       if (existingUser) {
         req.flash(
           'errors',
@@ -73,15 +74,15 @@ passport.use(new TwitterStrategy({
         );
         done(err);
       } else {
-        User.findById(req.user.id, function(err, user) {
-          user.twitter = profile.id;
-          user.tokens.push({kind: 'twitter', accessToken: accessToken, tokenSecret: tokenSecret});
-          user.profile.name = user.profile.name || profile.displayName;
+        User.findById(req.user.id, (err, user) => {
+          user.twitter = id;
+          user.tokens.push({kind: 'twitter', accessToken, tokenSecret});
+          user.profile.name = user.profile.name || displayName;
           user.profile.location = user.profile.location ||
-                                    profile._json.location;
+                                    _json.location;
           user.profile.picture = user.profile.picture
-                                  || profile._json.profile_image_url_https;
-          user.save(function(err) {
+                                  || _json.profile_image_url_https;
+          user.save((err) => {
             req.flash('info', {msg: 'Twitter account has been linked.'});
             done(err, user);
           });
@@ -89,7 +90,7 @@ passport.use(new TwitterStrategy({
       }
     });
   } else {
-    User.findOne({twitter: profile.id}, function(err, existingUser) {
+    User.findOne({twitter: id}, (err, existingUser) => {
       if (existingUser) {
         return done(null, existingUser);
       }
@@ -97,13 +98,13 @@ passport.use(new TwitterStrategy({
       // Twitter will not provide an email address.  Period.
       // But a person’s twitter username is guaranteed to be unique
       // so we can "fake" a twitter email address as follows:
-      user.email = profile.username + '@twitter.com';
-      user.twitter = profile.id;
-      user.tokens.push({kind: 'twitter', accessToken: accessToken, tokenSecret: tokenSecret});
-      user.profile.name = profile.displayName;
-      user.profile.location = profile._json.location;
-      user.profile.picture = profile._json.profile_image_url_https;
-      user.save(function(err) {
+      user.email = `${username}@twitter.com`;
+      user.twitter = id;
+      user.tokens.push({kind: 'twitter', accessToken, tokenSecret});
+      user.profile.name = displayName;
+      user.profile.location = _json.location;
+      user.profile.picture = _json.profile_image_url_https;
+      user.save((err) => {
         done(err, user);
       });
     });
@@ -112,20 +113,22 @@ passport.use(new TwitterStrategy({
 
 
 // Login Required middleware.
-exports.isAuthenticated = function(req, res, next) {
+function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
   res.redirect('/login');
-};
+}
 
 // Authorization Required middleware.
-exports.isAuthorized = function(req, res, next) {
-  const provider = req.path.split('/').slice(-1)[0];
+function isAuthorized({path, user}, res, next) {
+  const provider = path.split('/').slice(-1)[0];
 
-  if (_.find(req.user.tokens, {kind: provider})) {
+  if (_.find(user.tokens, {kind: provider})) {
     next();
   } else {
-    res.redirect('/auth/' + provider);
+    res.redirect(`/auth/${provider}`);
   }
-};
+}
+
+export {isAuthenticated, isAuthorized};

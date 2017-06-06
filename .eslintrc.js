@@ -1,7 +1,9 @@
 module.exports = {
     "extends": ["eslint:recommended", "google"],
     "rules": {
-      "max-len": ["error", {"ignoreStrings": true}],
+      "max-len": ["error", 
+                  {"ignoreStrings": true, "ignoreTemplateLiterals": true}
+                  ],
       "require-jsdoc": ["off"],
       "react/jsx-uses-vars": "error",
       "react/jsx-uses-react": "error"

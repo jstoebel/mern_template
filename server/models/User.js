@@ -1,6 +1,6 @@
-let bcrypt = require('bcrypt-nodejs');
-let crypto = require('crypto');
-let mongoose = require('mongoose');
+import bcrypt from 'bcrypt-nodejs';
+import crypto from 'crypto';
+import mongoose from 'mongoose';
 
 let userSchema = new mongoose.Schema({
   email: {type: String, unique: true},
@@ -36,11 +36,11 @@ userSchema.pre('save', function(next) {
   if (!user.isModified('password')) {
     return next();
   }
-  bcrypt.genSalt(10, function(err, salt) {
+  bcrypt.genSalt(10, (err, salt) => {
     if (err) {
       return next(err);
     }
-    bcrypt.hash(user.password, salt, null, function(err, hash) {
+    bcrypt.hash(user.password, salt, null, (err, hash) => {
       if (err) {
         return next(err);
       }
@@ -54,7 +54,7 @@ userSchema.pre('save', function(next) {
 // Helper method for validating user's password.
 
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     cb(err, isMatch);
   });
 };
@@ -67,12 +67,12 @@ userSchema.methods.gravatar = function(size) {
     size = 200;
   }
   if (!this.email) {
-    return 'https://gravatar.com/avatar/?s=' + size + '&d=retro';
+    return `https://gravatar.com/avatar/?s=${size}&d=retro`;
   }
   let md5 = crypto.createHash('md5').update(this.email).digest('hex');
-  return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
+  return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 
 let User = mongoose.model('User', userSchema);
 
-module.exports = User;
+export default User;

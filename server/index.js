@@ -1,33 +1,36 @@
 /**
  * Module dependencies.
  */
+import express from 'express';
 
-let express = require('express');
-let compress = require('compression');
-let session = require('express-session');
-let bodyParser = require('body-parser');
-let logger = require('morgan');
-let errorHandler = require('errorhandler');
-let lusca = require('lusca');
-let config = require('./config/config');
+import compress from 'compression';
+import session from 'express-session';
+import bodyParser from 'body-parser';
+import logger from 'morgan';
+import errorHandler from 'errorhandler';
+import lusca from 'lusca';
+import {currentEnv, db} from './config/config';
 
 let MongoStore = require('connect-mongo/es5')(session);
-let flash = require('express-flash');
-let path = require('path');
-let mongoose = require('mongoose');
+import flash from 'express-flash';
+import path from 'path';
+import mongoose from 'mongoose';
 mongoose.Promise = require('bluebird');
-let passport = require('passport');
-let expressValidator = require('express-validator');
-let sass = require('node-sass-middleware');
-let multer = require('multer');
+import passport from 'passport';
+import expressValidator from 'express-validator';
+import printRoutes from 'express-print-routes';
+import sass from 'node-sass-middleware';
+import multer from 'multer';
 // eslint-disable-next-line no-unused-vars
-let upload = multer({dest: path.join(__dirname, 'uploads')});
-let httpProxy = require('http-proxy');
+let upload = multer({dest: path.join(__dirname, '..', 'uploads')});
+import httpProxy from 'http-proxy';
 // eslint-disable-next-line no-unused-vars
 let proxy = httpProxy.createProxyServer();
 
 // eslint-disable-next-line no-unused-vars
-let passportConfig = require('./config/passport');
+import passportConfig from './config/passport';
+
+import routes from './config/routes';
 /**
  * Load environment variables from .env file,
  * where API keys and passwords are configured.
@@ -53,15 +56,15 @@ let app = express();
  */
 
 // eslint-disable-next-line no-console
-console.log('trying to connect to ' +config.db.URL);
-mongoose.connect(config.db.URL);
+console.log(`trying to connect to ${db.URL}`);
+mongoose.connect(db.URL);
 
-mongoose.connection.on('connected', function() {
+mongoose.connection.on('connected', () => {
   // eslint-disable-next-line no-console
-  console.log('connected to ' + config.db.URL);
+  console.log(`connected to ${db.URL}`);
 });
 
-mongoose.connection.on('error', function() {
+mongoose.connection.on('error', () => {
   // eslint-disable-next-line no-console
   console.log('MongoDB Connection Error. Please make sure that MongoDB is running.');
   process.exit(1);
@@ -71,7 +74,7 @@ mongoose.connection.on('error', function() {
  * Express configuration.
  */
 app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '..', 'views'));
 app.set('view engine', 'jade');
 app.use(compress());
 app.use(sass({
@@ -88,7 +91,7 @@ app.use(session({
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
   store: new MongoStore({
-    url: config.db.URL,
+    url: db.URL,
     autoReconnect: true,
   }),
 }));
@@ -104,11 +107,11 @@ app.use(flash());
 // });
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
-app.use(function(req, res, next) {
-  res.locals.user = req.user;
+app.use(({user}, {locals}, next) => {
+  locals.user = user;
   next();
 });
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   // After successful login, redirect back to /api, /contact or /
   if (/(api)|(contact)|(^\/$)/i.test(req.path)) {
     req.session.returnTo = req.path;
@@ -116,7 +119,7 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(express.static(path.join(__dirname, '..', 'public'), {maxAge: 31557600000}));
-app.use('/', require('./config/routes'));
+app.use('/', routes);
 
 
 /**
@@ -128,20 +131,19 @@ app.use(errorHandler());
 // output routes to file
 if (process.env.NODE_ENV === 'development') {
     // Absolute path to output file
-    const path = require('path');
     let filepath = path.join(__dirname, '../docs/routes.generated.txt');
     // Invoke express-print-routes
-    require('express-print-routes')(app, filepath);
+    printRoutes(app, filepath);
 }
 
 /**
  * Start Express server.
  */
 const port = process.env.PORT || 8000;
-app.listen(port, function() {
+app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log('Express server listening on port %d in %s mode', port, config.currentEnv);
+  console.log('Express server listening on port %d in %s mode', port, currentEnv);
 });
 
 
-module.exports = app;
+export default app;

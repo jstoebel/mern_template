@@ -3,12 +3,12 @@
  * Home page.
  */
 
-exports.index = function(req, res) {
+export function index(req, res) {
   res.render('home', {
     title: 'Home',
   });
-};
+}
 
-exports.welcome = function(req, res) {
+export function welcome(req, res) {
   res.render('welcome');
-};
+}

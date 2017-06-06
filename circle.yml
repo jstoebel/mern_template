@@ -1,0 +1,13 @@
+machine:
+  node:
+    # Circle will use node v4.0.0
+    version: 7.4.0
+
+test:
+  override:
+    - mv .env.example .env
+    - npm rebuild node-sass
+    - npm run lint
+    - npm run buildClient
+    - npm run buildServer
+    - npm run test
