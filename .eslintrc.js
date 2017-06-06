@@ -2,6 +2,7 @@ module.exports = {
     "extends": ["eslint:recommended", "google"],
     "rules": {
       "max-len": ["error", {"ignoreStrings": true}],
+      "require-jsdoc": ["off"],
       "react/jsx-uses-vars": "error",
       "react/jsx-uses-react": "error"
     },

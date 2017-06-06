@@ -1,3 +1,4 @@
+/* global describe it */
 let chai = require('chai');
 // eslint-disable-next-line no-unused-vars
 let should = chai.should();

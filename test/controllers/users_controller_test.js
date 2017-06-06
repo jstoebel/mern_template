@@ -1,3 +1,4 @@
+/* global describe it */
 let request = require('supertest');
 let app = require('../../app.js');
 

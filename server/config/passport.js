@@ -1,7 +1,6 @@
-/* global LocalStrategy */
-
 const _ = require('lodash');
 const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 
 const User = require('../models/User');
