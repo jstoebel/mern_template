@@ -1,78 +1,49 @@
+// Defining a User Model in mongoose
+// Code modified from https://github.com/sahat/hackathon-starter
 import bcrypt from 'bcrypt-nodejs';
-import crypto from 'crypto';
 import mongoose from 'mongoose';
+import crypto from 'crypto';
 
-let userSchema = new mongoose.Schema({
-  email: {type: String, unique: true},
-  password: String,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-
-  facebook: String,
-  twitter: String,
-  google: String,
-  github: String,
-  instagram: String,
-  linkedin: String,
-  steam: String,
-  tokens: Array,
-
-  profile: {
-    name: {type: String, default: ''},
-    gender: {type: String, default: ''},
-    location: {type: String, default: ''},
-    website: {type: String, default: ''},
-    picture: {type: String, default: ''},
-  },
-
-}, {timestamps: true});
+const UserSchema = new mongoose.Schema({
+	email: {
+		type: String,
+		unique: true,
+		lowercase: true,
+	},
+	password: String,
+});
 
 /**
  * Password hash middleware.
  */
-userSchema.pre('save', function(next) {
-  // eslint-disable-next-line no-invalid-this
-  let user = this;
-  if (!user.isModified('password')) {
-    return next();
-  }
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      return next(err);
-    }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
-      if (err) {
-        return next(err);
-      }
-      user.password = hash;
-      next();
-    });
-  });
+UserSchema.pre('save', function(next) {
+	let user = this;
+	if (!user.isModified('password')) return next();
+	bcrypt.genSalt(5, (err, salt) => {
+		if (err) return next(err);
+		bcrypt.hash(user.password, salt, null, (err, hash) => {
+			if (err) return next(err);
+			user.password = hash;
+			next();
+		});
+	});
 });
 
-
-// Helper method for validating user's password.
-
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
+/*
+ Defining our own custom document instance method
+ */
+UserSchema.methods = {
+  comparePassword: function(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    cb(err, isMatch);
-  });
-};
+    if (err) return cb(err);
+      cb(null, isMatch);
+    });
+  },
+ };
 
+/**
+* Statics
+*/
+UserSchema.statics = {};
 
-// Helper method for getting user's gravatar.
-
-userSchema.methods.gravatar = function(size) {
-  if (!size) {
-    size = 200;
-  }
-  if (!this.email) {
-    return `https://gravatar.com/avatar/?s=${size}&d=retro`;
-  }
-  let md5 = crypto.createHash('md5').update(this.email).digest('hex');
-  return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
-};
-
-let User = mongoose.model('User', userSchema);
-
-export default User;
+export default mongoose.model('User', UserSchema);

@@ -13,13 +13,11 @@ import {isAuthenticated} from './passport';
 // signing in locally
 
 router.get('/', controllers.home.index);
-router.get('/login', controllers.user.getLogin);
-router.post('/login', controllers.user.postLogin);
-router.get('/logout', controllers.user.logout);
-router.get('/forgot', controllers.user.getForgot);
-router.post('/forgot', controllers.user.postForgot);
-router.get('/reset/:token', controllers.user.getReset);
-router.post('/reset/:token', controllers.user.postReset);
+
+router.post('/login', controllers.users.login);
+router.get('/logout', controllers.users.logout);
+router.post('/register', controllers.users.register);
+
 router.get('/signup', controllers.user.getSignup);
 router.post('/signup', controllers.user.postSignup);
 router.get('/contact', controllers.contact.getContact);
