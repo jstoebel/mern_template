@@ -12849,7 +12849,7 @@ exports.default = _react2.default.createClass({
       _react2.default.createElement(
         'h1',
         null,
-        'React Router Tutorial'
+        'MERN template'
       ),
       _react2.default.createElement(
         'span',

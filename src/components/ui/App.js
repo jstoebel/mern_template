@@ -5,7 +5,7 @@ export default React.createClass({
   render() {
     return (
       <div>
-        <h1>React Router Tutorial</h1>
+        <h1>MERN template</h1>
         <span> Router content borrowed from
           <a href="https://github.com/reactjs/react-router-tutorial">
             https://github.com/reactjs/react-router-tutorial

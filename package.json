@@ -6,11 +6,14 @@
         "url": "https://github.com/jstoebel/mern_template.git"
     },
     "scripts": {
-        "devBuild": "webpack --progress --colors --watch",
-        "devBuild": "env NODE_ENV=development nodemon ./server/index.js --exec babel-node --presets es2015,stage-2",
+        "watchClient": "webpack --progress --colors --watch ",
+        "watchServer": "babel server -d dist --presets es2015 --watch",
+        "serveDev": "env NODE_ENV=development nodemon dist/index.js",
+
         "buildClient": "webpack --progress --colors",
         "buildServer": "babel server -d dist --presets es2015",
         "serve": "node dist/index.js",
+
         "test": "env NODE_ENV=test mocha --compilers js:node_modules/babel-register --require babel-polyfill --reporter spec --timeout 2000 --recursive",
         "lint": "node_modules/.bin/eslint ."
     },
