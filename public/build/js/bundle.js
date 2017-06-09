@@ -15862,6 +15862,18 @@ var _Home = __webpack_require__(140);
 
 var _Home2 = _interopRequireDefault(_Home);
 
+var _LoginContainer = __webpack_require__(319);
+
+var _LoginContainer2 = _interopRequireDefault(_LoginContainer);
+
+var _RegisterContainer = __webpack_require__(320);
+
+var _RegisterContainer2 = _interopRequireDefault(_RegisterContainer);
+
+var _MyProfileContainer = __webpack_require__(323);
+
+var _MyProfileContainer2 = _interopRequireDefault(_MyProfileContainer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // either pulls local storeage or, if its absent, grabs from sample data
@@ -15878,6 +15890,21 @@ store.subscribe(saveState);
 window.React = _react2.default;
 window.store = store;
 
+var requireAuth = function requireAuth(nextState, replace, callback) {
+  var _store$getState = store.getState(),
+      authenticated = _store$getState.user.authenticated;
+
+  if (!authenticated) {
+    // Takes a Location object
+    // https://github.com/mjackson/history/blob/master/docs/Location.md
+    replace({
+      pathname: "/login",
+      state: { nextPathname: nextState.location.pathname }
+    });
+  }
+  callback();
+};
+
 (0, _reactDom.render)(_react2.default.createElement(
   _reactRedux.Provider,
   { store: store },
@@ -15888,6 +15915,9 @@ window.store = store;
       _reactRouter.Route,
       { path: '/', component: _App2.default },
       _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _LoginContainer2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: 'register', component: _RegisterContainer2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: 'myprofile', component: _MyProfileContainer2.default, onEnter: requireAuth }),
       _react2.default.createElement(
         _reactRouter.Route,
         { path: '/repos', component: _Repos2.default },
@@ -32311,6 +32341,329 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 319 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRedux = __webpack_require__(79);
+
+var _users = __webpack_require__(164);
+
+var userActions = _interopRequireWildcard(_users);
+
+var _Login = __webpack_require__(321);
+
+var _Login2 = _interopRequireDefault(_Login);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+// Function passed in to `connect` to subscribe to Redux store updates.
+// Any time it updates, mapStateToProps is called.
+// The second argument "ownProps" contains props passed to the component
+var mapStateToProps = function mapStateToProps(state, ownProps) {
+  var nextPathname = '/';
+
+  try {
+    nextPathname = ownProps.location.state.nextPathname;
+  } catch (err) {}
+
+  return {
+    user: state.user,
+    nextPathname: nextPathname // this prop passed in by React Router
+  };
+};
+
+// Connects React component to the redux store
+// It does not modify the component class passed to it
+// Instead, it returns a new, connected component class, for you to use.
+exports.default = (0, _reactRedux.connect)(mapStateToProps, userActions)(_Login2.default);
+
+/***/ }),
+/* 320 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRedux = __webpack_require__(79);
+
+var _users = __webpack_require__(164);
+
+var userActions = _interopRequireWildcard(_users);
+
+var _Register = __webpack_require__(322);
+
+var _Register2 = _interopRequireDefault(_Register);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function mapStateToProps(state) {
+  return {};
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, userActions)(_Register2.default);
+
+/***/ }),
+/* 321 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(144);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _axios = __webpack_require__(146);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// ----------------------------------------------------
+var loginMessageStyle = {
+  color: 'red'
+};
+
+// ----------------------------------------------------
+var Login = _react2.default.createClass({
+  displayName: 'Login',
+
+
+  getInitialState: function getInitialState() {
+    return {
+      loginMessage: ''
+    };
+  },
+
+  _onLoginSubmit: function _onLoginSubmit(event) {
+    var _this = this;
+
+    event.preventDefault();
+    var email = _reactDom2.default.findDOMNode(this.refs.email).value;
+    var password = _reactDom2.default.findDOMNode(this.refs.password).value;
+
+    // Passed in via react-redux. Returns a promise.
+    this.props.manualLogin({ // this function is passed in via react-redux
+      email: email,
+      password: password
+    }, this.props.nextPathname // holds the path to redirect to after login (if any)
+    ).then(function (loginMessage) {
+      if (loginMessage) {
+        // report to the user is there was a problem during login
+        _this.setState({
+          loginMessage: loginMessage
+        });
+      }
+    });
+  },
+
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        'h2',
+        null,
+        'Log in'
+      ),
+      _react2.default.createElement(
+        'form',
+        { onSubmit: this._onLoginSubmit },
+        _react2.default.createElement('input', { type: 'email', ref: 'email', placeholder: 'Email' }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('input', { ref: 'password', type: 'password', placeholder: 'Password' }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('input', { type: 'submit', value: 'Login' }),
+        ' ',
+        _react2.default.createElement(
+          'span',
+          { style: loginMessageStyle },
+          this.state.loginMessage
+        )
+      )
+    );
+  }
+});
+
+exports.default = Login;
+
+/***/ }),
+/* 322 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(144);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// ----------------------------------------------------
+var registerMessageStyle = {
+  color: 'red'
+};
+
+// ----------------------------------------------------
+var Register = _react2.default.createClass({
+  displayName: 'Register',
+
+
+  getInitialState: function getInitialState() {
+    return {
+      registerMessage: ''
+    };
+  },
+
+  _onRegisterSubmit: function _onRegisterSubmit(event) {
+    var _this = this;
+
+    event.preventDefault();
+    var email = _reactDom2.default.findDOMNode(this.refs.email).value;
+    var password = _reactDom2.default.findDOMNode(this.refs.password).value;
+
+    // Passed in via react-redux. Returns a promise.
+    this.props.manualRegister({
+      email: email,
+      password: password
+    }).then(function (registerMessage) {
+      if (registerMessage) {
+        // report to the user is there was a problem during registration
+        _this.setState({
+          registerMessage: registerMessage
+        });
+      }
+    });
+  },
+
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        'h2',
+        null,
+        'Register'
+      ),
+      _react2.default.createElement(
+        'form',
+        { onSubmit: this._onRegisterSubmit },
+        _react2.default.createElement('input', { type: 'email', ref: 'email', placeholder: 'Email' }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('input', { type: 'password', ref: 'password', placeholder: 'Password' }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('input', { type: 'submit', value: 'Register' }),
+        ' ',
+        _react2.default.createElement(
+          'span',
+          { style: registerMessageStyle },
+          this.state.registerMessage
+        )
+      )
+    );
+  }
+});
+
+exports.default = Register;
+
+/***/ }),
+/* 323 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRedux = __webpack_require__(79);
+
+var _MyProfile = __webpack_require__(324);
+
+var _MyProfile2 = _interopRequireDefault(_MyProfile);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {};
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(_MyProfile2.default);
+
+/***/ }),
+/* 324 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MyProfile = _react2.default.createClass({
+  displayName: "MyProfile",
+
+  render: function render() {
+    return _react2.default.createElement(
+      "div",
+      null,
+      _react2.default.createElement(
+        "h2",
+        null,
+        "My Profile"
+      ),
+      _react2.default.createElement(
+        "p",
+        null,
+        "You're seeing this page because you logged in successfully! Try logging out, clicking the MyProfile link and then completing the login. You wil notice that it redirects you to MyProfile page :)"
+      )
+    );
+  }
+});
+
+exports.default = MyProfile;
 
 /***/ })
 /******/ ]);

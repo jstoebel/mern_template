@@ -13,6 +13,9 @@ import About from './components/ui/About';
 import Repos from './components/ui/Repos';
 import Repo from './components/ui/Repo';
 import Home from './components/ui/Home';
+import LoginContainer from './components/containers/LoginContainer';
+import RegisterContainer from './components/containers/RegisterContainer';
+import MyProfileContainer from './components/containers/MyProfileContainer';
 
 // either pulls local storeage or, if its absent, grabs from sample data
 const initialState = (localStorage['redux-store']) ?
@@ -30,11 +33,28 @@ window.React = React;
 window.store = store;
 
 
+
+const requireAuth = (nextState, replace, callback) => {
+  const { user: { authenticated } } = store.getState()		
+  if (!authenticated) {			
+    // Takes a Location object
+    // https://github.com/mjackson/history/blob/master/docs/Location.md
+    replace({
+      pathname: "/login",
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+  callback()
+}
+
 render((
   <Provider store={store}>
     <Router history={hashHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={Home}/>
+        <Route path="login" component={LoginContainer} />
+        <Route path="register" component={RegisterContainer} />
+        <Route path="myprofile" component={MyProfileContainer} onEnter={requireAuth} />
         <Route path="/repos" component={Repos}>
           <Route path="/repos/:userName/:repoName" component={Repo}/>
         </Route>
