@@ -22,6 +22,45 @@ export const items = (state=[], action) => {
   }
 };
 
+const user = (state = {
+  isWaiting: false,
+  authenticated: false,
+  email: '',
+}, action) => {
+  switch (action.type) {
+    case C.MANUAL_LOGIN_USER:
+      return Object.assign({}, state, {isWaiting: true});
+    case C.LOGIN_SUCCESS_USER:
+      return Object.assign({}, state, {
+          isWaiting: false, authenticated: true, email: action.data.email,
+        }
+      );
+    case C.LOGIN_ERROR_USER:
+      return Object.assign({}, state, {isWaiting: false, authenticated: false});
+    case C.SIGNUP_USER:
+      return Object.assign({}, state, {isWaiting: true});
+    case C.SIGNUP_SUCCESS_USER:
+      return Object.assign({}, state, {isWaiting: false, authenticated: true});
+    case C.SIGNUP_ERROR_USER:
+      return Object.assign({}, state, {isWaiting: false, authenticated: false});
+    case C.LOGOUT_USER:
+      return Object.assign({}, state, {isWaiting: true});
+    case C.LOGOUT_SUCCESS_USER:
+      return Object.assign({}, state, {isWaiting: false, authenticated: false, email: ''});
+    case C.LOGOUT_ERROR_USER:
+      return Object.assign({}, state, {isWaiting: false, authenticated: true});
+    case C.REGISTER_USER:
+      return Object.assign({}, state, {isWaiting: true});
+    case C.REGISTER_SUCCESS_USER:
+      return Object.assign({}, state, {isWaiting: false});
+    case C.REGISTER_ERROR_USER:
+      return Object.assign({}, state, {isWaiting: false});
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   items,
+  user,
 });
