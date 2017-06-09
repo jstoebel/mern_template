@@ -83,8 +83,8 @@ app.use(sass({
   sourceMap: true,
 }));
 app.use(logger('dev'));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressValidator());
 app.use(session({
   resave: true,

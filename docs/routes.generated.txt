@@ -4,8 +4,8 @@ router
  ├── compression                                   *                                                           
  ├── sass                                          *                                                           
  ├── logger                                        *                                                           
- ├── jsonParser                                    *                                                           
  ├── urlencodedParser                              *                                                           
+ ├── jsonParser                                    *                                                           
  ├── <anonymous>                                   *                                                           
  ├── session                                       *                                                           
  ├── initialize                                    *                                                           
@@ -19,137 +19,14 @@ router
  ├── router                                        *                                                           
  │   router                                                                                                    
  │    ├── bound dispatch                           /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
+ │    │    └── index                               /                                                           GET
  │    │   
- │    ├── bound dispatch                           /login                                                      GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /login                                                      POST
+ │    ├── bound dispatch                           /register                                                   POST
  │    │    └── <anonymous>                         /                                                           POST
  │    │   
- │    ├── bound dispatch                           /logout                                                     GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /forgot                                                     GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /forgot                                                     POST
- │    │    └── <anonymous>                         /                                                           POST
- │    │   
- │    ├── bound dispatch                           /reset/:token                                               GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /reset/:token                                               POST
- │    │    └── <anonymous>                         /                                                           POST
- │    │   
- │    ├── bound dispatch                           /signup                                                     GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /signup                                                     POST
- │    │    └── <anonymous>                         /                                                           POST
- │    │   
- │    ├── bound dispatch                           /contact                                                    GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /contact                                                    POST
- │    │    └── <anonymous>                         /                                                           POST
- │    │   
- │    ├── bound dispatch                           /account                                                    GET
- │    │    ├── <anonymous>                         /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /account/profile                                            POST
- │    │    ├── <anonymous>                         /                                                           POST
- │    │    └── <anonymous>                         /                                                           POST
- │    │   
- │    ├── bound dispatch                           /account/password                                           POST
- │    │    ├── <anonymous>                         /                                                           POST
- │    │    └── <anonymous>                         /                                                           POST
- │    │   
- │    ├── bound dispatch                           /account/delete                                             POST
- │    │    ├── <anonymous>                         /                                                           POST
- │    │    └── <anonymous>                         /                                                           POST
- │    │   
- │    ├── bound dispatch                           /account/unlink/:provider                                   GET
- │    │    ├── <anonymous>                         /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/instagram                                             GET
- │    │    └── authenticate                        /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/instagram/callback                                    GET
- │    │    ├── authenticate                        /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/facebook                                              GET
- │    │    └── authenticate                        /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/facebook/callback                                     GET
- │    │    ├── authenticate                        /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/github                                                GET
- │    │    └── authenticate                        /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/github/callback                                       GET
- │    │    ├── authenticate                        /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/google                                                GET
- │    │    └── authenticate                        /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/google/callback                                       GET
- │    │    ├── authenticate                        /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/twitter                                               GET
- │    │    └── authenticate                        /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/twitter/callback                                      GET
- │    │    ├── authenticate                        /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/linkedin                                              GET
- │    │    └── authenticate                        /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/linkedin/callback                                     GET
- │    │    ├── authenticate                        /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/foursquare                                            GET
- │    │    └── authenticate                        /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/foursquare/callback                                   GET
- │    │    ├── authenticate                        /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/tumblr                                                GET
- │    │    └── authenticate                        /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/tumblr/callback                                       GET
- │    │    ├── authenticate                        /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/venmo                                                 GET
- │    │    └── authenticate                        /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/venmo/callback                                        GET
- │    │    ├── authenticate                        /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/steam                                                 GET
- │    │    └── authenticate                        /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/steam/callback                                        GET
- │    │    ├── authenticate                        /                                                           GET
- │    │    └── <anonymous>                         /                                                           GET
- │    │   
- │    ├── bound dispatch                           /auth/pinterest                                             GET
- │    │    └── authenticate                        /                                                           GET
- │    │   
- │    └── bound dispatch                           /auth/pinterest/callback                                    GET
- │         ├── authenticate                        /                                                           GET
- │         └── <anonymous>                         /                                                           GET
+ │    └── bound dispatch                           /login                                                      POST
+ │         ├── authenticate                        /                                                           POST
+ │         └── <anonymous>                         /                                                           POST
  │        
  │   
  └── errorHandler                                  *                                                           
