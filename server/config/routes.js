@@ -1,7 +1,4 @@
 import express from 'express';
-
-// eslint-disable-next-line new-cap
-const router = express.Router();
 import passport from 'passport';
 const controllers = require('require.all')('../controllers');
 require('./passport');  // need to run passport config
@@ -11,15 +8,15 @@ require('./passport');  // need to run passport config
 const requireAuth = passport.authenticate('jwt', {session: false});
 const requireLogin = passport.authenticate('local', {session: false});
 
-/**
- * Primary router routes.
- */
+// eslint-disable-next-line new-cap
+const masterRouter = express.Router();
+masterRouter.get('/', controllers.home.index);
 
-// signing in locally
+// api routes
+// eslint-disable-next-line new-cap
+const apiRouter = express.Router();
+apiRouter.post('/auth/register', controllers.authentication.register);
+apiRouter.post('/auth/login', requireLogin, controllers.authentication.login);
 
-router.get('/', controllers.home.index);
-
-router.post('/register', controllers.authentication.register);
-router.post('/login', requireLogin, controllers.authentication.login);
-
-export default router;
+masterRouter.use('/api', apiRouter);
+export default masterRouter;
