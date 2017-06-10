@@ -1,22 +1,19 @@
-import React from 'react';
-import NavLink from './NavLink';
+import React, {Component} from 'react';
 
-export default React.createClass({
+class App extends Component {
   render() {
     return (
       <div>
-        <h1>MERN template</h1>
-        <span> Router content borrowed from
-          <a href="https://github.com/reactjs/react-router-tutorial">
-            https://github.com/reactjs/react-router-tutorial
-          </a>
-        </span>
-        <ul role="nav">
-          <li><NavLink to="/about">About</NavLink></li>
-          <li><NavLink to="/repos">Repos</NavLink></li>
-        </ul>
-        {this.props.children}
+        <p>Header here</p>
+
+        <div className="container">
+          {this.props.children}
+        </div>
+
+        <p>Footer here</p>
       </div>
     );
-  },
-});
+  }
+}
+
+export default App;
