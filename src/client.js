@@ -5,15 +5,22 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import reduxThunk from 'redux-thunk';
 import reducers from './reducers/index';
-import {AUTH_USER} from './actions/types';
 
-import {Router, Route, browserHistory, IndexRoute} from 'react-router';
+import cookie from 'react-cookie';
+
+import {Router, browserHistory} from 'react-router';
 import routes from './routes';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
-render(  
+const token = cookie.load('token');
+
+if (token) {
+  store.dispatch({type: AUTH_USER});
+}
+
+render(
   <Provider store={store}>
     <Router history={browserHistory} routes={routes} />
   </Provider>,

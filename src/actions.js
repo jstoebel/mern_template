@@ -1,89 +1,89 @@
 import C from './constants';
-import axios from 'axios';  
-import { browserHistory } from 'react-router';  
-import cookie from 'react-cookie';  
+import axios from 'axios';
+import {browserHistory} from 'react-router'; // eslint-disable-line
+import cookie from 'react-cookie';
 
 const API_URL = 'http://localhost:3000/api';
 
-export function errorHandler(dispatch, error, type) {  
+export function errorHandler(dispatch, error, type) {
   let errorMessage = '';
 
-  if(error.data.error) {
+  if (error.data.error) {
     errorMessage = error.data.error;
-  } else if(error.data) {
+  } else if (error.data) {
     errorMessage = error.data;
   } else {
     errorMessage = error;
   }
 
-  if(error.status === 401) {
+  if (error.status === 401) {
     dispatch({
       type: type,
-      payload: 'You are not authorized to do this. Please login and try again.'
+      payload: 'You are not authorized to do this. Please login and try again.',
     });
     logoutUser();
   } else {
     dispatch({
       type: type,
-      payload: errorMessage
+      payload: errorMessage,
     });
   }
 }
 
-export function loginUser({ email, password }) {  
+export function loginUser({email, password}) {
   // user is logged in and their token saved to cookie
   return function(dispatch) {
-    axios.post(`${API_URL}/auth/login`, { email, password })
-    .then(response => {
-      cookie.save('token', response.data.token, { path: '/' });
-      dispatch({ type: AUTH_USER });
-      window.location.href = CLIENT_ROOT_URL + '/dashboard';
+    axios.post(`${API_URL}/auth/login`, {email, password})
+    .then((response) => {
+      cookie.save('token', response.data.token, {path: '/'});
+      dispatch({type: C.AUTH_USER});
+      window.location.href = C.CLIENT_ROOT_URL + '/dashboard';
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR)
+      errorHandler(dispatch, error.response, C.AUTH_ERROR);
     });
-    }
+    };
   }
 
-export function registerUser({ email, firstName, lastName, password }) {  
+export function registerUser({email, firstName, lastName, password}) {
   // user is registered and their token stored in cookie
   return function(dispatch) {
-    axios.post(`${API_URL}/auth/register`, { email, firstName, lastName, password })
-    .then(response => {
-      cookie.save('token', response.data.token, { path: '/' });
-      dispatch({ type: AUTH_USER });
-      window.location.href = CLIENT_ROOT_URL + '/dashboard';
+    axios.post(`${API_URL}/auth/register`, {email, firstName, lastName, password})
+    .then((response) => {
+      cookie.save('token', response.data.token, {path: '/'});
+      dispatch({type: C.AUTH_USER});
+      window.location.href = C.CLIENT_ROOT_URL + '/dashboard';
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR)
+      errorHandler(dispatch, error.response, C.AUTH_ERROR);
     });
-  }
+  };
 }
 
-export function logoutUser() {  
+export function logoutUser() {
   // clear the user's token from cookie
-  return function (dispatch) {
-    dispatch({ type: UNAUTH_USER });
-    cookie.remove('token', { path: '/' });
+  return function(dispatch) {
+    dispatch({type: C.UNAUTH_USER});
+    cookie.remove('token', {path: '/'});
 
-    window.location.href = CLIENT_ROOT_URL + '/login';
-  }
+    window.location.href = C.CLIENT_ROOT_URL + '/login';
+  };
 }
 
-export function protectedTest() {  
+export function protectedTest() {
   // validate the user's token and see if they are authorized
   return function(dispatch) {
     axios.get(`${API_URL}/protected`, {
-      headers: { 'Authorization': cookie.load('token') }
+      headers: {'Authorization': cookie.load('token')},
     })
-    .then(response => {
+    .then((response) => {
       dispatch({
-        type: PROTECTED_TEST,
-        payload: response.data.content
+        type: C.PROTECTED_TEST,
+        payload: response.data.content,
       });
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, AUTH_ERROR)
+      errorHandler(dispatch, error.response, C.AUTH_ERROR);
     });
-  }
+  };
 }

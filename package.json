@@ -106,6 +106,7 @@
         "yui": "^3.18.1"
     },
     "devDependencies": {
+        "babel-cli": "^6.24.1",
         "babel-core": "^6.18.2",
         "babel-loader": "^6.2.8",
         "babel-plugin-transform-react-jsx": "^6.24.1",
