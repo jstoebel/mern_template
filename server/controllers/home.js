@@ -2,13 +2,10 @@
  * GET /
  * Home page.
  */
+const path = require('path');
 
 export function index(req, res) {
-  res.render('home', {
-    title: 'Home',
-  });
-}
+  console.log('responding with home#index');
+  res.sendFile(path.join(__dirname + '/../../public/build/index.html'))
 
-export function welcome(req, res) {
-  res.render('welcome');
 }

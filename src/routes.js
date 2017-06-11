@@ -5,9 +5,9 @@ import App from './components/ui/app';
 import NotFoundPage from './components/pages/not-found-page';
 
 import HomePage from './components/pages/home-page';
-import Register from './components/auth/register';
-import Login from './components/auth/login';
-import Dashboard from './components/dashboard';
+import Register from './components/containers/RegisterContainer';
+import Login from './components/containers/LoginContainer';
+import Dashboard from './components/ui/Dashboard';
 import requireAuth from './components/containers/AuthenticationContainer';
 
 export default (

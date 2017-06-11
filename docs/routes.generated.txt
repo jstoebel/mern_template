@@ -15,7 +15,6 @@ router
  ├── xssProtection                                 *                                                           
  ├── <anonymous>                                   *                                                           
  ├── <anonymous>                                   *                                                           
- ├── serveStatic                                   *                                                           
  ├── router                                        *                                                           
  │   router                                                                                                    
  │    ├── bound dispatch                           /                                                           GET
@@ -32,4 +31,5 @@ router
  │             
  │        
  │   
+ ├── serveStatic                                   *                                                           
  └── errorHandler                                  *                                                           
