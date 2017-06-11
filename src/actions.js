@@ -1,6 +1,5 @@
 import C from './constants';
 import axios from 'axios';
-import {browserHistory} from 'react-router'; // eslint-disable-line
 import cookie from 'react-cookie';
 
 const API_URL = 'http://localhost:3000/api';

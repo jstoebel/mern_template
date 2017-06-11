@@ -18,6 +18,8 @@ import reducers from './reducers/index';
 
 import cookie from 'react-cookie';
 
+console.log(cookie);
+
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
@@ -33,7 +35,7 @@ render(
       <Provider store={store}>
         <App>
           <Switch>
-            <Routes exact path="/" component={HomePage} />
+            <Route exact path="/" component={HomePage} />
             <Route path="register" component={Register} />
             <Route path="login" component={Login} />
             <Route path="dashboard" component={requireAuth(Dashboard)} />
