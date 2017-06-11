@@ -1,5 +1,10 @@
 import React from 'react';
+// import {IndexRoute} from 'react-router';
 import {Route, IndexRoute} from 'react-router';
+
+console.log("testing router methods");
+console.log(`Route ${Route !== undefined}`);
+console.log(`IndexRoute ${IndexRoute !== undefined}`);
 
 import App from './components/ui/app';
 import NotFoundPage from './components/pages/not-found-page';

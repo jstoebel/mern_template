@@ -12,7 +12,7 @@ module.exports = {
 
   output: {
     filename: '[name]-bundle-[hash:6].js',
-    publicPath: 'build',  
+    publicPath: 'build',
     path: __dirname + '/public/build',
   },
 
