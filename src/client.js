@@ -15,15 +15,29 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import reduxThunk from 'redux-thunk';
 import reducers from './reducers/index';
-
 import cookie from 'react-cookie';
 
-const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
-const store = createStoreWithMiddleware(reducers);
 
+/* set up of store
+  1) pull state from browser
+  2) creates the store with middle ware and initial state
+  3) add subscription to store so its saved to browser localStorage
+
+*/
+const initialState = JSON.parse(localStorage['redux-store']);
+
+const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
+const store = createStoreWithMiddleware(reducers, initialState);
+
+const saveState = () =>
+  localStorage['redux-store'] = JSON.stringify(store.getState());
+store.subscribe(saveState);
+
+// REMOVE ME! attach store and cookie to window for development
 window.store = store;
 window.cookie = cookie;
 
+// if user has a token mark them as logged in
 const token = cookie.load('token');
 
 if (token) {
