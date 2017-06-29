@@ -2,20 +2,21 @@ import C from './constants';
 import axios from 'axios';
 import cookie from 'react-cookie';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://localhost:8000/api';
 
-export function errorHandler(dispatch, error, type) {
+export function errorHandler(dispatch, errResp, type) {
+  
   let errorMessage = '';
 
-  if (error.data.error) {
-    errorMessage = error.data.error;
-  } else if (error.data) {
-    errorMessage = error.data;
+  if (errResp.data.error) {
+    errorMessage = errResp.data.error;
+  } else if (errResp.data) {
+    errorMessage = errResp.data;
   } else {
-    errorMessage = error;
+    errorMessage = errResp;
   }
 
-  if (error.status === 401) {
+  if (errResp.status === 401) {
     dispatch({
       type: type,
       payload: 'You are not authorized to do this. Please login and try again.',
@@ -51,10 +52,11 @@ export function registerUser({email, firstName, lastName, password}) {
     .then((response) => {
       cookie.save('token', response.data.token, {path: '/'});
       dispatch({type: C.AUTH_USER});
-      window.location.href = C.CLIENT_ROOT_URL + '/dashboard';
+      window.location.href = '/dashboard';
     })
     .catch((error) => {
-      errorHandler(dispatch, error.message, C.AUTH_ERROR);
+      console.log("error with registration");
+      errorHandler(dispatch, error.response, C.AUTH_ERROR);
     });
   };
 }

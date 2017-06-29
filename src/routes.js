@@ -12,7 +12,7 @@ import NotFoundPage from './components/pages/not-found-page';
 import HomePage from './components/pages/home-page';
 import Register from './components/containers/RegisterContainer';
 import Login from './components/containers/LoginContainer';
-import Dashboard from './components/ui/Dashboard';
+import Dashboard from './components/containers/DashboardContainer';
 import requireAuth from './components/containers/AuthenticationContainer';
 
 export default (

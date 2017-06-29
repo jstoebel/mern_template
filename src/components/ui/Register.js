@@ -41,6 +41,7 @@ function validate(formProps) {
 
 class Register extends Component {
   handleFormSubmit(formProps) {
+    console.log("handleFormSubmit");
     this.props.registerUser(formProps);
   }
 

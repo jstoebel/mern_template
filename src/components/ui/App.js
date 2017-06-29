@@ -14,7 +14,7 @@ class App extends Component {
             <Link to={'login'}>Login </Link>
           </li>
           <li>
-            <Link to={'dashobard'}>Dashboard</Link>
+            <Link to={'dashboard'}>Dashboard</Link>
           </li>
           <li>
             <Link to={'nowhere'}>Nowhere</Link>

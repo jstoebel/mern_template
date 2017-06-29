@@ -1,11 +1,11 @@
+import path from 'path'
+import underscore from 'underscore'
+import mongoose from 'mongoose'
+
 /**
- * GET /
- * Home page.
- */
-const path = require('path');
-
+* GET /
+* Home page.
+*/
 export function index(req, res) {
-  console.log('responding with home#index');
   res.sendFile(path.join(__dirname + '/../../public/build/index.html'))
-
 }

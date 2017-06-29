@@ -6,7 +6,7 @@ import App from './components/ui/app';
 import HomePage from './components/pages/home-page';
 import Register from './components/containers/RegisterContainer';
 import Login from './components/containers/LoginContainer';
-import Dashboard from './components/ui/Dashboard';
+import Dashboard from './components/containers/DashboardContainer';
 import requireAuth from './components/containers/AuthenticationContainer';
 import NotFoundPage from './components/pages/not-found-page';
 
@@ -21,6 +21,8 @@ import cookie from 'react-cookie';
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
+window.store = store
+window.cookie = cookie
 const token = cookie.load('token');
 
 if (token) {
