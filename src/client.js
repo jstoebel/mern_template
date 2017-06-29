@@ -21,8 +21,9 @@ import cookie from 'react-cookie';
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
-window.store = store
-window.cookie = cookie
+window.store = store;
+window.cookie = cookie;
+
 const token = cookie.load('token');
 
 if (token) {

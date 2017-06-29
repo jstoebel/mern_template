@@ -73,6 +73,7 @@ export function logoutUser() {
 
 export function protectedTest() {
   // validate the user's token and see if they are authorized
+  console.log("running protectedTest");
   return function(dispatch) {
     axios.get(`${API_URL}/protected`, {
       headers: {'Authorization': cookie.load('token')},

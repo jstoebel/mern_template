@@ -8,7 +8,5 @@ const mapStateToProps = (state) => {
   });
 };
 
-console.log("hello from dashboard container");
-console.log(actions.protectedTest);
 
 export default connect(mapStateToProps, actions)(Dashboard);

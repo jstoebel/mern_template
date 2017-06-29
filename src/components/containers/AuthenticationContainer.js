@@ -1,32 +1,37 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router';
+
+import {loginRequest} from '../../actions';
+console.log("auth container");
 
 export default function(ComposedComponent) {
   class Authentication extends Component {
-    static contextTypes() {
-      router: React.PropTypes.object;
-    }
-
-    componentWillMount() {
-      if (!this.props.authenticated) {
-        this.context.router.push('/login');
-      }
-    }
-
-    componentWillUpdate(nextProps) {
-      if (!nextProps.authenticated) {
-        this.context.router.push('/login');
-      }
-    }
 
     render() {
-      return <ComposedComponent {...this.props} />;
+      if (!this.props.authenticated) {
+        // push an error message to auth.message
+        loginRequest();
+        return <Redirect to='/login'/>;
+      } else {
+        return <ComposedComponent {...this.props} />;
+      }
     }
   }
 
   function mapStateToProps(state) {
     return {authenticated: state.auth.authenticated};
   }
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      addLoginRequest() {
+        dispatch(
+          loginRequest()
+        )
+      }
+    }
+  }
 
-  return connect(mapStateToProps)(Authentication);
+  return connect(mapStateToProps, mapDispatchToProps)(Authentication);
 }
