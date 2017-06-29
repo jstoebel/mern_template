@@ -54,7 +54,7 @@ export function registerUser({email, firstName, lastName, password}) {
       window.location.href = C.CLIENT_ROOT_URL + '/dashboard';
     })
     .catch((error) => {
-      errorHandler(dispatch, error.response, C.AUTH_ERROR);
+      errorHandler(dispatch, error.message, C.AUTH_ERROR);
     });
   };
 }

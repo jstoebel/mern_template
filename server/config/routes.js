@@ -10,7 +10,6 @@ const requireLogin = passport.authenticate('local', {session: false});
 
 // eslint-disable-next-line new-cap
 const masterRouter = express.Router();
-masterRouter.get('/', controllers.home.index);
 
 // api routes
 // eslint-disable-next-line new-cap
@@ -19,4 +18,5 @@ apiRouter.post('/auth/register', controllers.authentication.register);
 apiRouter.post('/auth/login', requireLogin, controllers.authentication.login);
 
 masterRouter.use('/api', apiRouter);
+masterRouter.all('/*', controllers.home.index);
 export default masterRouter;

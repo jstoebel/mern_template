@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {BrowserRouter, Switch, Route} from 'react-router';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import App from './components/ui/app';
 import HomePage from './components/pages/home-page';
@@ -18,8 +18,6 @@ import reducers from './reducers/index';
 
 import cookie from 'react-cookie';
 
-console.log(cookie);
-
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
@@ -36,9 +34,9 @@ render(
         <App>
           <Switch>
             <Route exact path="/" component={HomePage} />
-            <Route path="register" component={Register} />
-            <Route path="login" component={Login} />
-            <Route path="dashboard" component={requireAuth(Dashboard)} />
+            <Route path="/register" component={Register} />
+            <Route path="/login" component={Login} />
+            <Route path="/dashboard" component={requireAuth(Dashboard)} />
             <Route path="*" component={NotFoundPage} />
           </Switch>
         </App>

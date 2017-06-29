@@ -15,21 +15,21 @@ router
  ├── xssProtection                                 *                                                           
  ├── <anonymous>                                   *                                                           
  ├── <anonymous>                                   *                                                           
+ ├── serveStatic                                   *                                                           
  ├── router                                        *                                                           
  │   router                                                                                                    
- │    ├── bound dispatch                           /                                                           GET
- │    │    └── index                               /                                                           GET
+ │    ├── router                                   /^\/api\/?(?=\/|$)/                                         
+ │    │   router                                                                                               
+ │    │    ├── bound dispatch                      /auth/register                                              POST
+ │    │    │    └── <anonymous>                    /                                                           POST
+ │    │    │   
+ │    │    └── bound dispatch                      /auth/login                                                 POST
+ │    │         ├── authenticate                   /                                                           POST
+ │    │         └── <anonymous>                    /                                                           POST
+ │    │        
  │    │   
- │    └── router                                   /^\/api\/?(?=\/|$)/                                         
- │        router                                                                                               
- │         ├── bound dispatch                      /auth/register                                              POST
- │         │    └── <anonymous>                    /                                                           POST
- │         │   
- │         └── bound dispatch                      /auth/login                                                 POST
- │              ├── authenticate                   /                                                           POST
- │              └── <anonymous>                    /                                                           POST
- │             
+ │    └── bound dispatch                           /*                                                          _ALL
+ │         └── index                               /                                                           
  │        
  │   
- ├── serveStatic                                   *                                                           
  └── errorHandler                                  *                                                           

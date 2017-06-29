@@ -45,6 +45,7 @@ class Register extends Component {
   }
 
   renderAlert() {
+    console.log("starting renderAlert");
     if (this.props.errorMessage) {
       return (
         <div>
