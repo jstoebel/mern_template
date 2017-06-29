@@ -27,6 +27,7 @@ function setUserInfo(request) {
 // Login Route
 // ========================================
 exports.login = function(req, res, next) {
+  console.log("responding with authentication.login");
   let userInfo = setUserInfo(req.user);
 
   res.status(200).json({
@@ -98,12 +99,18 @@ exports.register = function(req, res, next) {
   });
 };
 
+exports.checkToken = function(req, res) {
+  console.log("checkToken passes!");
+  res.status(200).json({status: 'success'})
+}
+
 // ========================================
 // Authorization Middleware
 // ========================================
 
 // Role authorization check
 exports.roleAuthorization = function(role) {
+  console.log("responding with roleAuthorization");
   return function(req, res, next) {
     const user = req.user;
 

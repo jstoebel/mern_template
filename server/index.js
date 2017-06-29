@@ -49,8 +49,6 @@ import routes from './config/routes';
  */
 let app = express();
 
-// end
-
 /**
  * Connect to MongoDB.
  */

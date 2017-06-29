@@ -8,11 +8,13 @@ const form = reduxForm({
 
 class Login extends Component {
   handleFormSubmit(formProps) {
+    console.log("submitting login form");
     this.props.loginUser(formProps);
   }
 
   renderAlert() {
     if (this.props.errorMessage) {
+      console.log(`rendering with message: ${this.props.errorMessage}`);
       return (
         <div>
           <span><strong>Error!</strong> {this.props.errorMessage}</span>
@@ -22,6 +24,7 @@ class Login extends Component {
   }
 
   render() {
+    console.log("rendering Login");
     const {handleSubmit} = this.props;
 
     return (

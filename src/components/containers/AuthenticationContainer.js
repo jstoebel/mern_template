@@ -2,16 +2,18 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router';
 
-import {loginRequest} from '../../actions';
-console.log("auth container");
+import {protectedTest} from '../../actions';
 
 export default function(ComposedComponent) {
   class Authentication extends Component {
-
+    
     render() {
+      
+      // lazy auth: just check the state in the store. We don't need to hit the server
+      // until we are actually trying to access a service. Why hit the server
+      // if the store knows they aren't logged in?
       if (!this.props.authenticated) {
-        // push an error message to auth.message
-        loginRequest();
+        console.log("store says you're not logged in! Redirecting...");
         return <Redirect to='/login'/>;
       } else {
         return <ComposedComponent {...this.props} />;
@@ -22,16 +24,6 @@ export default function(ComposedComponent) {
   function mapStateToProps(state) {
     return {authenticated: state.auth.authenticated};
   }
-  
-  const mapDispatchToProps = (dispatch) => {
-    return {
-      addLoginRequest() {
-        dispatch(
-          loginRequest()
-        )
-      }
-    }
-  }
 
-  return connect(mapStateToProps, mapDispatchToProps)(Authentication);
+  return connect(mapStateToProps, {protectedTest})(Authentication);
 }

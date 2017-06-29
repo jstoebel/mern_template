@@ -5,7 +5,6 @@ import cookie from 'react-cookie';
 const API_URL = 'http://localhost:8000/api';
 
 export function errorHandler(dispatch, errResp, type) {
-  
   let errorMessage = '';
 
   if (errResp.data.error) {
@@ -21,7 +20,9 @@ export function errorHandler(dispatch, errResp, type) {
       type: type,
       payload: 'You are not authorized to do this. Please login and try again.',
     });
-    logoutUser();
+
+    dispatch({type: C.UNAUTH_USER});
+    cookie.remove('token', {path: '/'});
   } else {
     dispatch({
       type: type,
@@ -37,7 +38,7 @@ export function loginUser({email, password}) {
     .then((response) => {
       cookie.save('token', response.data.token, {path: '/'});
       dispatch({type: C.AUTH_USER});
-      window.location.href = C.CLIENT_ROOT_URL + '/dashboard';
+      window.location.href = '/dashboard';
     })
     .catch((error) => {
       errorHandler(dispatch, error.response, C.AUTH_ERROR);
@@ -64,27 +65,33 @@ export function registerUser({email, firstName, lastName, password}) {
 export function logoutUser() {
   // clear the user's token from cookie
   return function(dispatch) {
+    console.log("starting logoutUser");
     dispatch({type: C.UNAUTH_USER});
-    cookie.remove('token', {path: '/'});
 
-    window.location.href = C.CLIENT_ROOT_URL + '/login';
+    cookie.remove('token', {path: '/'});
+    
+    window.location.href = '/login';
   };
 }
 
 export function protectedTest() {
   // validate the user's token and see if they are authorized
-  console.log("running protectedTest");
   return function(dispatch) {
-    axios.get(`${API_URL}/protected`, {
+    console.log("running protectedTest");
+    axios.get(`${API_URL}/auth/protected`, {
       headers: {'Authorization': cookie.load('token')},
     })
     .then((response) => {
+      console.log("protectedTest passed");
+      console.log(response);
       dispatch({
         type: C.PROTECTED_TEST,
         payload: response.data.content,
       });
     })
     .catch((error) => {
+      console.log("sneaky! you aren't actually logged in.");
+      console.log(error);
       errorHandler(dispatch, error.response, C.AUTH_ERROR);
     });
   };

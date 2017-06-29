@@ -23,9 +23,13 @@ router
  │    │    ├── bound dispatch                      /auth/register                                              POST
  │    │    │    └── <anonymous>                    /                                                           POST
  │    │    │   
- │    │    └── bound dispatch                      /auth/login                                                 POST
- │    │         ├── authenticate                   /                                                           POST
- │    │         └── <anonymous>                    /                                                           POST
+ │    │    ├── bound dispatch                      /auth/login                                                 POST
+ │    │    │    ├── authenticate                   /                                                           POST
+ │    │    │    └── <anonymous>                    /                                                           POST
+ │    │    │   
+ │    │    └── bound dispatch                      /auth/protected                                             GET
+ │    │         ├── authenticate                   /                                                           GET
+ │    │         └── <anonymous>                    /                                                           GET
  │    │        
  │    │   
  │    └── bound dispatch                           /*                                                          _ALL
