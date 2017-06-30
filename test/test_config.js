@@ -1,3 +1,5 @@
+console.log("RUNNING TEST_CONFIG");
+
 //  Modified from https://github.com/elliotf/mocha-mongoose
 /* global beforeEach afterEach */
 // eslint-disable-next-line no-unused-vars

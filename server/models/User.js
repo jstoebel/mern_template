@@ -1,12 +1,7 @@
-// eslint-disable-next-line 
-// credit: http://blog.slatepeak.com/refactoring-a-basic-authenticated-api-with-node-express-and-mongo/
-
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt-nodejs';
 
-const Schema = mongoose.Schema;
-
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     lowercase: true,
@@ -62,4 +57,6 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
   });
 };
 
-export default mongoose.model('User', UserSchema);
+console.log("REGISTERING USER");
+let UserModel = mongoose.model('User', UserSchema);
+module.exports = UserModel;

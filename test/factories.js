@@ -1,4 +1,6 @@
-let models = require('require.all')('../models');
+console.log("RUNNING FACTORIES");
+
+let models = require('../server/models/index');
 let fg = require('factory-girl');
 
 let adapter = new fg.MongooseAdapter();

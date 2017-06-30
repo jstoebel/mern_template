@@ -27,7 +27,7 @@ function setUserInfo(request) {
 // Login Route
 // ========================================
 exports.login = function(req, res, next) {
-  console.log("responding with authentication.login");
+
   let userInfo = setUserInfo(req.user);
 
   res.status(200).json({
