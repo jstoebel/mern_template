@@ -1,134 +1,57 @@
-import _ from 'lodash';
 import passport from 'passport';
-import {Strategy as LocalStrategy} from 'passport-local';
-import {Strategy as TwitterStrategy} from 'passport-twitter';
-import User from '../models/User';
+import User from '../models/user';
+import {secret as appSecret} from './config';
+import {Strategy as JwtStrategy} from 'passport-jwt';
+import {ExtractJwt} from 'passport-jwt';
+import LocalStrategy from 'passport-local';
 
-passport.serializeUser(({id}, done) => {
-  done(null, id);
-});
+const localOptions = {usernameField: 'email'};
 
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
+// Setting up local login strategy
+const localLogin = new LocalStrategy(localOptions, function(email, password, done) {
+  User.findOne({email: email}, function(err, user) {
+    if (err) {
+      return done(err);
+    }
+    if (!user) {
+      return done(null, false, {error: 'Your login details could not be verified. Please try again.'});
+    }
+
+    user.comparePassword(password, function(err, isMatch) {
+      if (err) {
+        return done(err);
+      }
+      if (!isMatch) {
+        return done(null, false, {error: 'Your login details could not be verified. Please try again.'});
+      }
+
+      return done(null, user);
+    });
   });
 });
 
-/**
- * Sign in using Email and Password.
- */
-passport.use(
-  new LocalStrategy({usernameField: 'email'},
-  (email, password, done) => {
-    User.findOne({email: email.toLowerCase()}, (err, user) => {
-      if (!user) {
-        return done(null, false, {msg: `Email ${email} not found.`});
-      }
-      user.comparePassword(password, (err, isMatch) => {
-        if (isMatch) {
-          return done(null, user);
-        } else {
-          return done(null, false, {msg: 'Invalid email or password.'});
-        }
-      });
-    });
-}));
+const jwtOptions = {
+  // Telling Passport to check authorization headers for JWT
+  jwtFromRequest: ExtractJwt.fromAuthHeader(),
+  // Telling Passport where to find the secret
+  secretOrKey: appSecret,
+};
 
-/*
-End JWT Strategy
-*/
+// Setting up JWT login strategy
+// Please note, some people have had issues with this step. Depending on your setup, you might need to replace payload._id with payload.doc._id or payload.document._id. When in doubt, add console.log(payload); to your code and search the console for the right user ID if you are always getting the same user back when logging in different user accounts.
+const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
+  User.findById(payload._id, function(err, user) {
+    if (err) {
+      return done(err, false);
+    }
 
-/**
- * OAuth Strategy Overview
- *
- * - User is already logged in.
- *   - Check if there is an existing account with a provider id.
- *     - If there is, return an error message. (Account merging not supported)
- *     - Else link new OAuth account with currently logged-in user.
- * - User is not logged in.
- *   - Check if it's a returning user.
- *     - If returning user, sign in and we are done.
- *     - Else check if there is an existing account with user's email.
- *       - If there is, return an error message.
- *       - Else create a new account.
- */
+    if (user) {
+      done(null, user);
+    } else {
+      done(null, false);
+    }
+  });
+});
 
-// Sign in with Twitter.
-
-passport.use(new TwitterStrategy({
-  consumerKey: process.env.TWITTER_KEY,
-  consumerSecret: process.env.TWITTER_SECRET,
-  callbackURL: '/auth/twitter/callback',
-  passReqToCallback: true,
-}, (
-    req, accessToken, tokenSecret, {id, displayName, _json, username}, done
-  ) => {
-  if (req.user) {
-    User.findOne({twitter: id}, (err, existingUser) => {
-      if (existingUser) {
-        req.flash(
-          'errors',
-          {
-            msg: 'There is already a Twitter account that belongs to you. Sign in with that account or delete it, then link it with your current account.',
-          }
-        );
-        done(err);
-      } else {
-        User.findById(req.user.id, (err, user) => {
-          user.twitter = id;
-          user.tokens.push({kind: 'twitter', accessToken, tokenSecret});
-          user.profile.name = user.profile.name || displayName;
-          user.profile.location = user.profile.location ||
-                                    _json.location;
-          user.profile.picture = user.profile.picture
-                                  || _json.profile_image_url_https;
-          user.save((err) => {
-            req.flash('info', {msg: 'Twitter account has been linked.'});
-            done(err, user);
-          });
-        });
-      }
-    });
-  } else {
-    User.findOne({twitter: id}, (err, existingUser) => {
-      if (existingUser) {
-        return done(null, existingUser);
-      }
-      const user = new User();
-      // Twitter will not provide an email address.  Period.
-      // But a person’s twitter username is guaranteed to be unique
-      // so we can "fake" a twitter email address as follows:
-      user.email = `${username}@twitter.com`;
-      user.twitter = id;
-      user.tokens.push({kind: 'twitter', accessToken, tokenSecret});
-      user.profile.name = displayName;
-      user.profile.location = _json.location;
-      user.profile.picture = _json.profile_image_url_https;
-      user.save((err) => {
-        done(err, user);
-      });
-    });
-  }
-}));
-
-
-// Login Required middleware.
-function isAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-}
-
-// Authorization Required middleware.
-function isAuthorized({path, user}, res, next) {
-  const provider = path.split('/').slice(-1)[0];
-
-  if (_.find(user.tokens, {kind: provider})) {
-    next();
-  } else {
-    res.redirect(`/auth/${provider}`);
-  }
-}
-
-export {isAuthenticated, isAuthorized};
+passport.use(jwtLogin);
+passport.use(localLogin);

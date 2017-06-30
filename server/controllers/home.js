@@ -1,14 +1,11 @@
+import path from 'path'
+import underscore from 'underscore'
+import mongoose from 'mongoose'
+
 /**
- * GET /
- * Home page.
- */
-
+* GET /
+* Home page.
+*/
 export function index(req, res) {
-  res.render('home', {
-    title: 'Home',
-  });
-}
-
-export function welcome(req, res) {
-  res.render('welcome');
+  res.sendFile(path.join(__dirname + '/../../public/build/index.html'))
 }

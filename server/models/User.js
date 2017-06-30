@@ -1,78 +1,65 @@
-import bcrypt from 'bcrypt-nodejs';
-import crypto from 'crypto';
+// eslint-disable-next-line 
+// credit: http://blog.slatepeak.com/refactoring-a-basic-authenticated-api-with-node-express-and-mongo/
+
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt-nodejs';
 
-let userSchema = new mongoose.Schema({
-  email: {type: String, unique: true},
-  password: String,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
+const Schema = mongoose.Schema;
 
-  facebook: String,
-  twitter: String,
-  google: String,
-  github: String,
-  instagram: String,
-  linkedin: String,
-  steam: String,
-  tokens: Array,
-
-  profile: {
-    name: {type: String, default: ''},
-    gender: {type: String, default: ''},
-    location: {type: String, default: ''},
-    website: {type: String, default: ''},
-    picture: {type: String, default: ''},
+const UserSchema = new Schema({
+  email: {
+    type: String,
+    lowercase: true,
+    unique: true,
+    required: true,
   },
+  password: {
+    type: String,
+    required: true,
+  },
+  profile: {
+    firstName: {type: String},
+    lastName: {type: String},
+  },
+  role: {
+    type: String,
+    enum: ['Member', 'Client', 'Owner', 'Admin'],
+    default: 'Member',
+  },
+  resetPasswordToken: {type: String},
+  resetPasswordExpires: {type: Date},
+},
+{
+  timestamps: true,
+});
 
-}, {timestamps: true});
+// Pre-save of user to database, hash password if password is modified or new
+UserSchema.pre('save', function(next) {
+  const user = this; // eslint-disable-line no-invalid-this
+  const SALT_FACTOR = 5;
 
-/**
- * Password hash middleware.
- */
-userSchema.pre('save', function(next) {
-  // eslint-disable-next-line no-invalid-this
-  let user = this;
-  if (!user.isModified('password')) {
-    return next();
-  }
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      return next(err);
-    }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
-      if (err) {
-        return next(err);
-      }
+  if (!user.isModified('password')) return next();
+
+  bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
+    if (err) return next(err);
+
+    bcrypt.hash(user.password, salt, null, function(err, hash) {
+      if (err) return next(err);
       user.password = hash;
       next();
     });
   });
 });
 
+// Method to compare password for login
+UserSchema.methods.comparePassword = function(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    if (err) {
+      return cb(err);
+    }
 
-// Helper method for validating user's password.
-
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    cb(err, isMatch);
+    cb(null, isMatch);
   });
 };
 
-
-// Helper method for getting user's gravatar.
-
-userSchema.methods.gravatar = function(size) {
-  if (!size) {
-    size = 200;
-  }
-  if (!this.email) {
-    return `https://gravatar.com/avatar/?s=${size}&d=retro`;
-  }
-  let md5 = crypto.createHash('md5').update(this.email).digest('hex');
-  return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
-};
-
-let User = mongoose.model('User', userSchema);
-
-export default User;
+export default mongoose.model('User', UserSchema);

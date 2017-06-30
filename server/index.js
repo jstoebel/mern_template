@@ -49,8 +49,6 @@ import routes from './config/routes';
  */
 let app = express();
 
-// end
-
 /**
  * Connect to MongoDB.
  */
@@ -83,8 +81,8 @@ app.use(sass({
   sourceMap: true,
 }));
 app.use(logger('dev'));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressValidator());
 app.use(session({
   resave: true,
@@ -118,15 +116,14 @@ app.use((req, res, next) => {
   }
   next();
 });
+
 app.use(express.static(path.join(__dirname, '..', 'public'), {maxAge: 31557600000}));
 app.use('/', routes);
-
 
 /**
  * Error Handler.
  */
 app.use(errorHandler());
-
 
 // output routes to file
 if (process.env.NODE_ENV === 'development') {

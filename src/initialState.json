@@ -1,3 +1,8 @@
 {
-    "items": []
+    "auth": {
+        "error": "",
+        "message": "",
+        "content": "",
+        "authenticated": false
+    }
 }
