@@ -1,6 +1,6 @@
 import Login from '../ui/Login';
 import {connect} from 'react-redux';
-import {loginUser} from '../../actions';
+import {loginUser, clearErrors} from '../../actions';
 
 function mapStateToProps(state) {
   return {
@@ -9,4 +9,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {loginUser})(Login);
+export default connect(mapStateToProps, {loginUser, clearErrors})(Login);

@@ -31,6 +31,10 @@ export function errorHandler(dispatch, errResp, type) {
   }
 }
 
+export function clearErrors(dispatch) {
+  dispatch({type: C.CLEAR_ERROR});
+}
+
 export function loginUser({email, password}) {
   // user is logged in and their token saved to cookie
   return function(dispatch) {

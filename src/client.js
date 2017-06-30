@@ -17,6 +17,7 @@ import reduxThunk from 'redux-thunk';
 import reducers from './reducers/index';
 import cookie from 'react-cookie';
 
+import startingState from './initialState.json'
 
 /* set up of store
   1) pull state from browser
@@ -24,7 +25,11 @@ import cookie from 'react-cookie';
   3) add subscription to store so its saved to browser localStorage
 
 */
-const initialState = JSON.parse(localStorage['redux-store']);
+
+// either pulls local storage or, if its absent, grabs from sample data
+const initialState = (localStorage['redux-store']) ?
+    JSON.parse(localStorage['redux-store']) :
+    startingState;
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers, initialState);

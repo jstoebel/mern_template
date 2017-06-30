@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
-
+import {Alert} from 'react-bootstrap';
 
 const form = reduxForm({
   form: 'login',
@@ -8,17 +8,15 @@ const form = reduxForm({
 
 class Login extends Component {
   handleFormSubmit(formProps) {
-    console.log("submitting login form");
     this.props.loginUser(formProps);
   }
 
   renderAlert() {
     if (this.props.errorMessage) {
-      console.log(`rendering with message: ${this.props.errorMessage}`);
       return (
-        <div>
+        <Alert bsStyle="danger" onDismiss={this.props.handleAlertDismiss}>
           <span><strong>Error!</strong> {this.props.errorMessage}</span>
-        </div>
+        </Alert>
       );
     }
   }
