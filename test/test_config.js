@@ -9,17 +9,26 @@ let _ = require('underscore');
 // this is helpful when you would like to change behavior when testing
 process.env.NODE_ENV = 'test';
 
-const clearDB = function() {
+const clearDB = function(done) {
   _.each(mongoose.connection.models, function(model, name) {
-    model.remove({}, function(err, removed) {
+    model.remove({}, function(err) {
+      if (err) {
+        throw err
+      }
+      model.find({}, function(items) {
+        done()
+      })
     });
   });
 };
 
-beforeEach(function() {
-  clearDB();
+beforeEach(function(done) {
+  console.log("before hook");
+  clearDB(done);
+  console.log("before hook done");
 });
 
 afterEach(function() {
-  clearDB();
+  // console.log("after hook");
+  // clearDB();
 });

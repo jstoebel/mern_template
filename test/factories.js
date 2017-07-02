@@ -9,6 +9,10 @@ factory.setAdapter(adapter);
 factory.define('user', User, {
   email: factory.sequence('User.email', (n) => `email_${n}@demo.com`),
   password: '123',
+  profile: {
+    firstName: 'Jacob',
+    lastName: 'Stoebel'
+  }
 
 });
 

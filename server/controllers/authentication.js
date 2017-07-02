@@ -29,7 +29,7 @@ function setUserInfo(request) {
 exports.login = function(req, res, next) {
   /*
     assuming a successful login, set user info and jwt and return to user
-  */ 
+  */
   let userInfo = setUserInfo(req.user);
 
   res.status(200).json({
@@ -43,6 +43,9 @@ exports.login = function(req, res, next) {
 // Registration Route
 // ========================================
 exports.register = function(req, res, next) {
+  
+  console.log("INSIDE REGISTER CONTROLLER");
+  console.log(req.params);
   
   /*
     handles registration of user
