@@ -1,11 +1,14 @@
 import passport from 'passport';
-import User from '../models/user';
+import User from '../models/User';
 import {secret as appSecret} from './config';
 import {Strategy as JwtStrategy} from 'passport-jwt';
 import {ExtractJwt} from 'passport-jwt';
 import LocalStrategy from 'passport-local';
 
-const localOptions = {usernameField: 'email'};
+const localOptions = {
+    usernameField: 'email',
+    passwordField: 'password'
+  }
 
 // Setting up local login strategy
 const localLogin = new LocalStrategy(localOptions, function(email, password, done) {

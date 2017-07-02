@@ -57,6 +57,5 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
   });
 };
 
-console.log("REGISTERING USER");
 let UserModel = mongoose.model('User', UserSchema);
 module.exports = UserModel;

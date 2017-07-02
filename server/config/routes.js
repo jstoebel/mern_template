@@ -1,4 +1,4 @@
-import express from 'express';
+  import express from 'express';
 import passport from 'passport';
 const controllers = require('require.all')('../controllers');
 require('./passport');  // need to run passport config

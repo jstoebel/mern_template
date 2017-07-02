@@ -1,37 +1,39 @@
 /* global describe it */
-console.log("STARTING AUTH CONTROLLER TEST");
 import request from 'supertest';
 import {expect} from 'chai';
-
+import factory from '../factories';
 import app from '../../server/index';
-import {factory} from '../factories';
+import User from '../../server/models/User'
 
 
 describe('POST /api/auth/login', () => {
   it('should return 200 ok', (done) => {
-    factory.build('user')
+    
+    let testPw = '123'
+    factory.create('user', {password: testPw})
       .then((user) => {
         request(app)
           .post('/api/auth/login')
-          .send({user: user})
+          .send({email: user.email, password: testPw})
           .expect(200, done);
       });
+  
   });
   
-  it('returns token and userInfo', () => {
-    factory.build('user')
+  it('should return token and userInfo', (done) => {
+    let testPw = '123'
+    factory.create('user', {password: testPw})
       .then((user) => {
         request(app)
           .post('/api/auth/login')
-          .send({user: user})
+          .send({email: user.email, password: testPw})
           .then((resp) => {
-            expect(resp.body._id).to.equal(user._id);
-            expect(resp.body.firstName).to.equal(user.firstName);
-            expect(resp.body.lastName).to.equal(user.lastName);
-            expect(resp.body.email).to.equal(user.email);
-            expect(resp.body.role0.to.equal(user.role));
+            expect(resp.body.token).to.not.equal(undefined)
+            expect(resp.body.user._id).to.equal(user._id.toString());
+            expect(resp.body.user.email).to.equal(user.email);
+            expect(resp.body.user.role).to.equal(user.role);
             done();
-          });
-      });
+          })
+      })
   });
 });
