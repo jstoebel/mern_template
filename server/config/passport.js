@@ -42,8 +42,6 @@ const jwtOptions = {
 // Setting up JWT login strategy
 // Please note, some people have had issues with this step. Depending on your setup, you might need to replace payload._id with payload.doc._id or payload.document._id. When in doubt, add console.log(payload); to your code and search the console for the right user ID if you are always getting the same user back when logging in different user accounts.
 const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
-  console.log("INSIDE jwtLogin");
-  console.log(payload);
   
   User.findById(payload._id, function(err, user) {
     if (err) {

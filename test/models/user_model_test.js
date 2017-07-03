@@ -1,20 +1,40 @@
-// /* global describe it */
-// let chai = require('chai');
-// // eslint-disable-next-line no-unused-vars
-// let should = chai.should();
-// // eslint-disable-next-line no-unused-vars
-// let models = require('require.all')('../models');
-// let factory = require('../factories');
-// 
-// require('../test_config');
-// 
-// describe('User Model', () => {
-//   it('requires a unique email', function(done) {
-//     factory.createMany('user', 2, {email: 'same@email.com'}).then(function(users) {
-//       done(new Error('fail'));
-//     }).catch(function(err) {
-//       err.code.should.equal(11000);
-//       done();
-//     });
-//   });
-// });
+/* global describe it */
+import request from 'supertest';
+import {expect} from 'chai';
+import factory from '../factories';
+import User from '../../server/models/User';
+
+let testPw = '123'
+
+describe('User Model', () => {
+
+  let testUser;
+  beforeEach((done) => {
+    // build a user but don't persist
+    factory.build('user', {password: testPw})
+      .then((user) => {
+        testUser = user;
+        done();
+      })
+  }) // beforeEach
+
+  afterEach((done) => {
+    User.remove({}, () => {
+      done();
+    })
+  }); // afterEach
+
+  it('requires a unique email', (done) => {
+
+    testUser.save((err) => {
+      factory.create('user', {email: testUser.email})
+        .then((user) => {
+          done(new Error('test failed.'));
+        }).catch((err) => {
+          expect(err.code).to.equal(11000);
+          done();
+        })
+    })
+  });
+
+});

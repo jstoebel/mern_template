@@ -128,7 +128,6 @@ describe('Authentication Controller', function(){
         }
         
         const expectedToken = 'JWT ' + generateToken(userInfo)
-        console.log(expectedToken);
         request(app)
           .get('/api/auth/protected')
           .set('Authorization', expectedToken)
