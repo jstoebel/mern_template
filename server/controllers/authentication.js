@@ -44,12 +44,10 @@ exports.login = function(req, res, next) {
 // ========================================
 exports.register = function(req, res, next) {
   
-  console.log("INSIDE REGISTER CONTROLLER");
-  console.log(req.params);
-  
   /*
     handles registration of user
   */
+  
   
   // Check for registration errors
   const email = req.body.email;
@@ -114,7 +112,8 @@ exports.checkToken = function(req, res) {
     checking the actual token is handled with the middleware requireAuth
     in routes.js getting here means it was successful. return a success to user
   */
-  console.log("checkToken passes!");
+  
+  console.log("INSIDE checkToken");
   res.status(200).json({status: 'success'})
 }
 
@@ -124,7 +123,6 @@ exports.checkToken = function(req, res) {
 
 // Role authorization check
 exports.roleAuthorization = function(role) {
-  console.log("responding with roleAuthorization");
   return function(req, res, next) {
     const user = req.user;
 

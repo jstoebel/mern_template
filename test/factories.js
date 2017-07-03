@@ -12,7 +12,8 @@ factory.define('user', User, {
   profile: {
     firstName: 'Jacob',
     lastName: 'Stoebel'
-  }
+  },
+  role: 'Member'
 
 });
 
