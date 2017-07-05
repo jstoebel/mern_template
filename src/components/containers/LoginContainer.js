@@ -1,6 +1,11 @@
 import Login from '../ui/Login';
 import {connect} from 'react-redux';
 import {loginUser, clearErrors} from '../../actions';
+import {reduxForm} from 'redux-form';
+
+const loginContainer = reduxForm({
+  form: 'login',
+})(Login);
 
 function mapStateToProps(state) {
   return {
@@ -9,4 +14,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {loginUser, clearErrors})(Login);
+export default connect(
+                  mapStateToProps, {loginUser, clearErrors}
+                )(loginContainer);

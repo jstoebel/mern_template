@@ -1,10 +1,6 @@
 import React, {Component} from 'react';
-import {Field, reduxForm} from 'redux-form';
+import {Field} from 'redux-form';
 import {Alert} from 'react-bootstrap';
-
-const form = reduxForm({
-  form: 'login',
-});
 
 class Login extends Component {
   handleFormSubmit(formProps) {
@@ -22,7 +18,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log("rendering Login");
     const {handleSubmit} = this.props;
 
     return (
@@ -54,4 +49,4 @@ class Login extends Component {
   }
 }
 
-export default form(Login);
+export default Login

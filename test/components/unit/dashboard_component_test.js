@@ -1,11 +1,9 @@
 /* global describe it */
 import React from 'react';
 import {expect} from 'chai';
-import {shallow, mount, render} from 'enzyme';
-import {Link} from 'react-router-dom';
+import {mount} from 'enzyme';
 import sinon from 'sinon';
-import factory from '../factories';
-import Dashboard from '../../src/components/ui/Dashboard';
+import Dashboard from '../../../src/components/ui/Dashboard';
 import jsdom from 'jsdom';
 
 
@@ -14,7 +12,7 @@ const doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
 global.document = doc;
 global.window = doc.defaultView;
 
-describe('<App/>', () => {
+describe('<Dashboard/>', () => {
   let wrapper;
   beforeEach((done) => {
     const protectedTestSpy = sinon.spy();
