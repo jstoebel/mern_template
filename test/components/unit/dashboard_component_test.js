@@ -6,7 +6,6 @@ import sinon from 'sinon';
 import Dashboard from '../../../src/components/ui/Dashboard';
 import jsdom from 'jsdom';
 
-
 // https://github.com/airbnb/enzyme/issues/341
 const doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
 global.document = doc;

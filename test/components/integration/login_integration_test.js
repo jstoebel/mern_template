@@ -9,6 +9,12 @@ import sinon from 'sinon'
 
 import reducers from '../../../src/reducers/index';
 
+import jsdom from 'jsdom';
+
+// https://github.com/airbnb/enzyme/issues/341
+const doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
+global.document = doc;
+global.window = doc.defaultView;
 /*
   we need to hook up the Login component to redux and redux-form
 */
@@ -17,7 +23,7 @@ import {reducer as formReducer} from 'redux-form'
 import {createStore, combineReducers} from 'redux'
 import {Provider} from 'react-redux'
 
-describe('LoginContainer', () => {
+describe('<LoginContainer/>', () => {
   
   let store;
   let loginUserSpy; // the action dispatch we need to spy on
@@ -35,10 +41,6 @@ describe('LoginContainer', () => {
     
     store = createStore(reducers, initialState)
     loginUserSpy = sinon.stub().returns(Promise.resolve());
-    
-    const props = {
-      loginUserSpy,
-    }
     
     container = mount(
       <Provider store={store}>
