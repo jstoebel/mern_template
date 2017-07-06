@@ -9,7 +9,6 @@ import sinon from 'sinon'
 
 import reducers from '../../../src/reducers/index';
 
-
 /*
   we need to hook up the Login component to redux and redux-form
 */
@@ -21,8 +20,8 @@ import {Provider} from 'react-redux'
 describe('LoginContainer', () => {
   
   let store;
-  let loginUser; // the action dispatch we need to stub
-  let subject;
+  let loginUserSpy; // the action dispatch we need to spy on
+  let container;
   
   beforeEach(() => {
     const initialState = {
@@ -34,27 +33,26 @@ describe('LoginContainer', () => {
     }
     
     store = createStore(reducers, initialState)
-    loginUser = sinon.stub().returns(Promise.resolve())
+    loginUserSpy = sinon.stub().returns(Promise.resolve());
+    
     const props = {
-      loginUser,
+      loginUserSpy,
     }
-    sinon.spy(Login.prototype, 'handleFormSubmit');
-    subject = mount(
+    
+    container = mount(
       <Provider store={store}>
-        <LoginContainer {...props}/>
+        <LoginContainer loginUser={loginUserSpy} />
       </Provider>
     )
   })
   
-  it('calls handleFormSubmit', (done) => {
+  it('calls loginUser', (done) => {
+    const form = container
+      .find(Login).first()
+      .find('form').first()
     
-    const form = subject.find('form').first()
     form.simulate('submit')
-    expect(Login.prototype.handleFormSubmit.calledOnce).to.be(true)
-    done();
-  })
-  
-  it.skip('calls loginUser', (done) => {
+    expect(loginUserSpy.callCount).to.equal(1)
     done();
   })
   
