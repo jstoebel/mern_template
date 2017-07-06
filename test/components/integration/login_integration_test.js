@@ -22,9 +22,10 @@ describe('LoginContainer', () => {
   let store;
   let loginUserSpy; // the action dispatch we need to spy on
   let container;
-  
+  let login; // the Login component
+  let initialState
   beforeEach(() => {
-    const initialState = {
+    initialState = {
       auth: {
         error: 'an error occured.',
         message: 'message for you sir!',
@@ -44,16 +45,22 @@ describe('LoginContainer', () => {
         <LoginContainer loginUser={loginUserSpy} />
       </Provider>
     )
+    
+    login = container.find(Login).first()
   })
   
   it('calls loginUser', (done) => {
-    const form = container
-      .find(Login).first()
+    const form = login
       .find('form').first()
-    
     form.simulate('submit')
     expect(loginUserSpy.callCount).to.equal(1)
     done();
   })
   
+  it('passes messages from store', (done) => {
+    expect(login.props().errorMessage).to.equal(initialState.auth.error)
+    expect(login.props().message).to.equal(initialState.auth.message)
+    done();
+  })
+    
 })
