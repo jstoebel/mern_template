@@ -20,13 +20,12 @@ describe('<Register/>', () => {
     let fields;
     beforeEach((done) => {
       fields = wrapper.find(Field);
-      console.log(`there are ${fields.length} fields`);
       done();
     });
     const fieldNames = ['firstName', 'lastName', 'email', 'password'];
     fieldNames.forEach((name) => {
       it(`renders ${name}`, (done) => {
-        expect(fields.find({name: name})).to.have.length(1)
+        expect(fields.find({name: name})).to.have.length(1);
         done();
       })
     })
@@ -37,7 +36,7 @@ describe('<Register/>', () => {
     const msg = 'Something went wrong'
     wrapper.setProps({errorMessage: msg})
     expect(
-        wrapper.find('div span')
+        wrapper.find(Alert).find('span')
           .text()
     ).to.equal(`Error! ${msg}`)
     

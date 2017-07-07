@@ -32,7 +32,7 @@ const initialState = (localStorage['redux-store']) ?
     startingState;
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
-const store = createStoreWithMiddleware(reducers, initialState);
+const store = createStoreWithMiddleware(reducers), initialState);
 
 const saveState = () =>
   localStorage['redux-store'] = JSON.stringify(store.getState());

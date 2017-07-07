@@ -52,8 +52,7 @@ describe('<LoginContainer/>', () => {
   })
   
   it('calls loginUser', (done) => {
-    const form = login
-      .find('form').first()
+    const form = login.find('form').first()
     form.simulate('submit')
     expect(loginUserSpy.callCount).to.equal(1)
     done();

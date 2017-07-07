@@ -1,57 +1,45 @@
 import React, {Component} from 'react';
-import {Field, reduxForm} from 'redux-form';
+import {Field} from 'redux-form';
+import {Alert} from 'react-bootstrap';
 
-const form = reduxForm({
-  form: 'register',
-  validate,
-});
-
-const renderField = (field) => (
-    <div>
-      <input className="form-control" {...field.input}/>
-      {
-        field.touched &&
-        field.error &&
-        <div className="error">{field.error}</div>
-      }
-    </div>
-);
-
-function validate(formProps) {
-  const errors = {};
-
-  if (!formProps.firstName) {
-    errors.firstName = 'Please enter a first name';
+const renderField = (field) => {
+  if (field.meta.touched && field.meta.error) {
+    const style = {
+      color: 'red',
+      fontWeight: 'bold',
+    }
+    return (
+        <div>
+          <input className="form-control" {...field.input}/>
+          <div style={style} className="error">{field.meta.error}</div>
+        </div>
+    )
+  } else {
+    return (
+      <div>
+        <input className="form-control" {...field.input}/>
+      </div>
+    )
   }
-
-  if (!formProps.lastName) {
-    errors.lastName = 'Please enter a last name';
-  }
-
-  if (!formProps.email) {
-    errors.email = 'Please enter an email';
-  }
-
-  if (!formProps.password) {
-    errors.password = 'Please enter a password';
-  }
-
-  return errors;
 }
 
 class Register extends Component {
+  
+  constructor() {
+    super()
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+  }
+  
   handleFormSubmit(formProps) {
-    console.log("handleFormSubmit");
     this.props.registerUser(formProps);
   }
 
   renderAlert() {
-    console.log("starting renderAlert");
     if (this.props.errorMessage) {
       return (
-        <div>
+        <Alert bsStyle="danger" onDismiss={this.props.handleAlertDismiss}>
           <span><strong>Error!</strong> {this.props.errorMessage}</span>
-        </div>
+        </Alert>
       );
     }
   }
@@ -60,7 +48,7 @@ class Register extends Component {
     const {handleSubmit} = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+      <form onSubmit={handleSubmit(this.handleFormSubmit)}>
       {this.renderAlert()}
       <div className="row">
         <div className="col-md-6">
@@ -110,4 +98,4 @@ class Register extends Component {
   }
 }
 
-export default form(Register);
+export default Register;
