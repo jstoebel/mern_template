@@ -82,12 +82,19 @@ describe('<RegisterContainer/>', () => {
 
     fieldInput.forEach((fi) => {
       it(`fails with invalid ${fi.name}`, (done) => {
+        
+        // click out of the field
         form.find(Field).find({name: fi.name}).first()
           .simulate('blur')
-          
+        
+        /* 
+          gotcha: when the component rerenders, the original node you grabed
+          from enzyme will not reflect this change. Grab it again!
+        */
         expect(
           form.find(Field).find('.error').text()
         ).to.equal(`Please enter ${fi.humanName}`)
+        expect(registerUserSpy.callCount).to.equal(0)
         done();
       })
     })
