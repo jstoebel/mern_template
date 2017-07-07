@@ -14,11 +14,10 @@ export default function(ComposedComponent) {
         until we are actually trying to access a service. Why hit the server
         if the store knows they aren't logged in?
       */
-      if (!this.props.authenticated) {
-        console.log("store says you're not logged in! Redirecting...");
-        return <Redirect to='/login'/>;
-      } else {
+      if (this.props.authenticated) {
         return <ComposedComponent {...this.props} />;
+      } else {
+        return <Redirect to='/login'/>;
       }
     }
   }
