@@ -6,7 +6,11 @@ module.exports = {
                   ],
       "require-jsdoc": ["off"],
       "react/jsx-uses-vars": "error",
-      "react/jsx-uses-react": "error"
+      "react/jsx-uses-react": "error",
+      "sort-imports": ["error", {
+        "ignoreCase": true,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+      }],
     },
     "parserOptions": {
         "ecmaVersion": 6,

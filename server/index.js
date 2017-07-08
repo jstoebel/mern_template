@@ -1,36 +1,37 @@
 /**
  * Module dependencies.
  */
-import express from 'express';
 
-import compress from 'compression';
-import session from 'express-session';
-import bodyParser from 'body-parser';
-import logger from 'morgan';
-import errorHandler from 'errorhandler';
-import lusca from 'lusca';
 import {currentEnv, db} from './config/config';
 
-let MongoStore = require('connect-mongo/es5')(session);
-import flash from 'express-flash';
-import path from 'path';
-import mongoose from 'mongoose';
-mongoose.Promise = require('bluebird');
-import passport from 'passport';
+import bodyParser from 'body-parser';
+import compress from 'compression';
+import errorHandler from 'errorhandler';
+import express from 'express';
 import expressValidator from 'express-validator';
-import printRoutes from 'express-print-routes';
-import sass from 'node-sass-middleware';
+import flash from 'express-flash';
+import httpProxy from 'http-proxy';
+import logger from 'morgan';
+import lusca from 'lusca';
+import mongoose from 'mongoose';
 import multer from 'multer';
+import passport from 'passport';
+// eslint-disable-next-line no-unused-vars
+import passportConfig from './config/passport';
+import path from 'path';
+import printRoutes from 'express-print-routes';
+import routes from './config/routes';
+import sass from 'node-sass-middleware';
+import session from 'express-session';
+
+let MongoStore = require('connect-mongo/es5')(session);
+mongoose.Promise = require('bluebird');
 // eslint-disable-next-line no-unused-vars
 let upload = multer({dest: path.join(__dirname, '..', 'uploads')});
-import httpProxy from 'http-proxy';
 // eslint-disable-next-line no-unused-vars
 let proxy = httpProxy.createProxyServer();
 
-// eslint-disable-next-line no-unused-vars
-import passportConfig from './config/passport';
 
-import routes from './config/routes';
 /**
  * Load environment variables from .env file,
  * where API keys and passwords are configured.

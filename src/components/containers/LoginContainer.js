@@ -1,6 +1,7 @@
-import Login from '../ui/Login';
+import {clearErrors, loginUser} from '../../actions';
+
 import {connect} from 'react-redux';
-import {loginUser, clearErrors} from '../../actions';
+import Login from '../ui/Login';
 import {reduxForm} from 'redux-form';
 
 const loginContainer = reduxForm({
@@ -14,7 +15,7 @@ function mapStateToProps(state) {
   };
 }
 
-/* 
+/*
   this function ensures that any props passed into the container
   (i.e. <LoginContainer spam={eggs}) will override anything mapped out
   in mapStateToProps or mapDispatchToProps. This lets us pass spys into the
@@ -22,7 +23,7 @@ function mapStateToProps(state) {
 */
 
 const mergeProps = (stateProps, dispatchProps, ownProps) =>
-	Object.assign({}, stateProps, dispatchProps, ownProps)
+	Object.assign({}, stateProps, dispatchProps, ownProps);
 
 export default connect(
                   mapStateToProps, {loginUser, clearErrors}, mergeProps

@@ -1,9 +1,8 @@
 'use strict';
 
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
-import User from '../models/User';
 import {secret as appSecret} from '../config/config';
+import jwt from 'jsonwebtoken';
+import User from '../models/User';
 
 function generateToken(user) {
   return jwt.sign(user, appSecret, {
@@ -43,12 +42,11 @@ exports.login = function(req, res, next) {
 // Registration Route
 // ========================================
 exports.register = function(req, res, next) {
-  
   /*
     handles registration of user
   */
-  
-  
+
+
   // Check for registration errors
   const email = req.body.email;
   const firstName = req.body.firstName;
@@ -112,10 +110,9 @@ exports.checkToken = function(req, res) {
     checking the actual token is handled with the middleware requireAuth
     in routes.js getting here means it was successful. return a success to user
   */
-  
-  console.log("INSIDE checkToken");
-  res.status(200).json({status: 'success'})
-}
+
+  res.status(200).json({status: 'success'});
+};
 
 // ========================================
 // Authorization Middleware
