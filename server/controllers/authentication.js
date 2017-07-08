@@ -2,7 +2,7 @@
 
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import User from '../models/user';
+import User from '../models/User';
 import {secret as appSecret} from '../config/config';
 
 function generateToken(user) {
@@ -27,7 +27,9 @@ function setUserInfo(request) {
 // Login Route
 // ========================================
 exports.login = function(req, res, next) {
-  console.log("responding with authentication.login");
+  /*
+    assuming a successful login, set user info and jwt and return to user
+  */
   let userInfo = setUserInfo(req.user);
 
   res.status(200).json({
@@ -41,6 +43,12 @@ exports.login = function(req, res, next) {
 // Registration Route
 // ========================================
 exports.register = function(req, res, next) {
+  
+  /*
+    handles registration of user
+  */
+  
+  
   // Check for registration errors
   const email = req.body.email;
   const firstName = req.body.firstName;
@@ -100,7 +108,12 @@ exports.register = function(req, res, next) {
 };
 
 exports.checkToken = function(req, res) {
-  console.log("checkToken passes!");
+  /*
+    checking the actual token is handled with the middleware requireAuth
+    in routes.js getting here means it was successful. return a success to user
+  */
+  
+  console.log("INSIDE checkToken");
   res.status(200).json({status: 'success'})
 }
 
@@ -110,7 +123,6 @@ exports.checkToken = function(req, res) {
 
 // Role authorization check
 exports.roleAuthorization = function(role) {
-  console.log("responding with roleAuthorization");
   return function(req, res, next) {
     const user = req.user;
 

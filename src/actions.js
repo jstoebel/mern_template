@@ -9,7 +9,7 @@ export function errorHandler(dispatch, errResp, type) {
 
   if (errResp.data.error) {
     errorMessage = errResp.data.error;
-  } else if (errResp.data) {
+  } else if (errResp.data) {  
     errorMessage = errResp.data;
   } else {
     errorMessage = errResp;
@@ -96,6 +96,7 @@ export function protectedTest() {
     .catch((error) => {
       console.log("sneaky! you aren't actually logged in.");
       console.log(error);
+      console.log(error.response);
       errorHandler(dispatch, error.response, C.AUTH_ERROR);
     });
   };

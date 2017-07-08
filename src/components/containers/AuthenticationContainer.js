@@ -9,14 +9,15 @@ export default function(ComposedComponent) {
     
     render() {
       
-      // lazy auth: just check the state in the store. We don't need to hit the server
-      // until we are actually trying to access a service. Why hit the server
-      // if the store knows they aren't logged in?
-      if (!this.props.authenticated) {
-        console.log("store says you're not logged in! Redirecting...");
-        return <Redirect to='/login'/>;
-      } else {
+      /*
+        lazy auth: just check the state in the store. We don't need to hit the server
+        until we are actually trying to access a service. Why hit the server
+        if the store knows they aren't logged in?
+      */
+      if (this.props.authenticated) {
         return <ComposedComponent {...this.props} />;
+      } else {
+        return <Redirect to='/login'/>;
       }
     }
   }
