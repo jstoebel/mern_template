@@ -1,7 +1,7 @@
 import {applyMiddleware, createStore} from 'redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
-import App from './components/ui/app';
+import App from './components/ui/App';
 import C from './constants';
 import cookie from 'react-cookie';
 import Dashboard from './components/containers/DashboardContainer';
