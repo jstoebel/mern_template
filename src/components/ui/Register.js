@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Field} from 'redux-form';
+
 import {Alert} from 'react-bootstrap';
+import {Field} from 'redux-form';
 
 const renderField = (field) => {
   if (field.meta.touched && field.meta.error) {

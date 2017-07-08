@@ -1,9 +1,9 @@
-/* global describe it */
-import React from 'react';
-import {expect} from 'chai';
-import {mount, render, shallow} from 'enzyme';
-import {Link} from 'react-router-dom';
+/* global describe it beforeEach */
+
 import App from '../../../src/components/ui/App';
+import {expect} from 'chai';
+import React from 'react';
+import {shallow} from 'enzyme';
 
 describe('<App/>', () => {
   let wrapper;

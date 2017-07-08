@@ -1,15 +1,15 @@
-/* global describe it */
-import LoginContainer from '../../../src/components/containers/LoginContainer';
-import Login from '../../../src/components/ui/Login';
-import React from 'react';
+/* global describe it beforeEach Promise*/
+import {createStore} from 'redux';
 
 import {expect} from 'chai';
-import {mount} from 'enzyme';
-import sinon from 'sinon';
-
-import reducers from '../../../src/reducers/index';
-
 import jsdom from 'jsdom';
+import Login from '../../../src/components/ui/Login';
+import LoginContainer from '../../../src/components/containers/LoginContainer';
+import {mount} from 'enzyme';
+import {Provider} from 'react-redux';
+import React from 'react';
+import reducers from '../../../src/reducers/index';
+import sinon from 'sinon';
 
 // https://github.com/airbnb/enzyme/issues/341
 const doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
@@ -19,9 +19,6 @@ global.window = doc.defaultView;
   we need to hook up the Login component to redux and redux-form
 */
 
-import {reducer as formReducer} from 'redux-form';
-import {combineReducers, createStore} from 'redux';
-import {Provider} from 'react-redux';
 
 describe('<LoginContainer/>', () => {
   let store;
@@ -39,6 +36,7 @@ describe('<LoginContainer/>', () => {
     };
 
     store = createStore(reducers, initialState);
+
     loginUserSpy = sinon.stub().returns(Promise.resolve());
 
     container = mount(

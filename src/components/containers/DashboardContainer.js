@@ -1,5 +1,6 @@
-import {connect} from 'react-redux';
 import * as actions from '../../actions';
+
+import {connect} from 'react-redux';
 import Dashboard from '../ui/Dashboard';
 
 const mapStateToProps = (state) => {

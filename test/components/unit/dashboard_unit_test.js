@@ -1,10 +1,11 @@
-/* global describe it */
-import React from 'react';
-import {expect} from 'chai';
-import {mount} from 'enzyme';
-import sinon from 'sinon';
+/* global describe it beforeEach*/
+
 import Dashboard from '../../../src/components/ui/Dashboard';
+import {expect} from 'chai';
 import jsdom from 'jsdom';
+import {mount} from 'enzyme';
+import React from 'react';
+import sinon from 'sinon';
 
 // https://github.com/airbnb/enzyme/issues/341
 const doc = jsdom.jsdom('<!doctype html><html><body></body></html>');

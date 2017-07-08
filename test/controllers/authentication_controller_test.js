@@ -1,12 +1,13 @@
-/* global describe it */
-import request from 'supertest';
-import jwt from 'jsonwebtoken';
+/* global describe it beforeEach afterEach*/
+
+import _ from 'lodash';
+import app from '../../server/index';
+import {secret as appSecret} from '../../server/config/config';
 import {expect} from 'chai';
 import factory from '../factories';
-import app from '../../server/index';
+import jwt from 'jsonwebtoken';
+import request from 'supertest';
 import User from '../../server/models/User';
-import {secret as appSecret} from '../../server/config/config';
-import _ from 'lodash';
 
 let testPw = '123';
 
@@ -34,13 +35,11 @@ describe('Authentication Controller', function() {
   }); // afterEach
 
   describe('LOGIN', () => {
-    let savedUser;
     beforeEach((done) => {
       testUser.save((err) => {
         if (err) {
           throw err;
         }
-        savedUser = testUser;
         done();
       });
     });

@@ -1,5 +1,5 @@
-/* global describe it */
-import request from 'supertest';
+/* global describe it beforeEach afterEach*/
+
 import {expect} from 'chai';
 import factory from '../factories';
 import User from '../../server/models/User';

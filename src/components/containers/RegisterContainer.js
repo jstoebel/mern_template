@@ -1,7 +1,7 @@
-import Register from '../ui/Register';
 import {connect} from 'react-redux';
-import {registerUser} from '../../actions';
 import {reduxForm} from 'redux-form';
+import Register from '../ui/Register';
+import {registerUser} from '../../actions';
 
 const registerContainer = reduxForm({
   form: 'register',

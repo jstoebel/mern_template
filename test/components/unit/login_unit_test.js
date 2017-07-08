@@ -1,11 +1,12 @@
-/* global describe it */
-import React from 'react';
-import {expect} from 'chai';
-import {shallow} from 'enzyme';
-import {Field} from 'redux-form';
+/* global describe it beforeEach*/
+
 import {Alert} from 'react-bootstrap';
-import sinon from 'sinon';
+import {expect} from 'chai';
+import {Field} from 'redux-form';
 import Login from '../../../src/components/ui/Login';
+import React from 'react';
+import {shallow} from 'enzyme';
+import sinon from 'sinon';
 
 describe('<Login/>', () => {
   let wrapper;

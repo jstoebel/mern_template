@@ -1,15 +1,16 @@
-/* global describe it */
-import RegisterContainer from '../../../src/components/containers/RegisterContainer';
-import Register from '../../../src/components/ui/Register';
-import React from 'react';
+/* global describe it beforeEach Promise*/
+import {createStore} from 'redux';
 
 import {expect} from 'chai';
-import {mount} from 'enzyme';
-import sinon from 'sinon';
-
-import reducers from '../../../src/reducers/index';
-
+import {Field} from 'redux-form';
 import jsdom from 'jsdom';
+import {mount} from 'enzyme';
+import {Provider} from 'react-redux';
+import React from 'react';
+import reducers from '../../../src/reducers/index';
+import Register from '../../../src/components/ui/Register';
+import RegisterContainer from '../../../src/components/containers/RegisterContainer';
+import sinon from 'sinon';
 
 // https://github.com/airbnb/enzyme/issues/341
 const doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
@@ -19,9 +20,6 @@ global.window = doc.defaultView;
   we need to hook up the Registe component to redux and redux-form
 */
 
-import {Field, reducer as formReducer} from 'redux-form';
-import {combineReducers, createStore} from 'redux';
-import {Provider} from 'react-redux';
 
 describe('<RegisterContainer/>', () => {
   let store;

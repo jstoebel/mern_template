@@ -1,6 +1,7 @@
-import Login from '../ui/Login';
-import {connect} from 'react-redux';
 import {clearErrors, loginUser} from '../../actions';
+
+import {connect} from 'react-redux';
+import Login from '../ui/Login';
 import {reduxForm} from 'redux-form';
 
 const loginContainer = reduxForm({

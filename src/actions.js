@@ -1,5 +1,5 @@
-import C from './constants';
 import axios from 'axios';
+import C from './constants';
 import cookie from 'react-cookie';
 
 const API_URL = 'http://localhost:8000/api';
@@ -60,7 +60,6 @@ export function registerUser({email, firstName, lastName, password}) {
       window.location.href = '/dashboard';
     })
     .catch((error) => {
-      console.log('error with registration');
       errorHandler(dispatch, error.response, C.AUTH_ERROR);
     });
   };
@@ -69,7 +68,6 @@ export function registerUser({email, firstName, lastName, password}) {
 export function logoutUser() {
   // clear the user's token from cookie
   return function(dispatch) {
-    console.log('starting logoutUser');
     dispatch({type: C.UNAUTH_USER});
 
     cookie.remove('token', {path: '/'});
@@ -81,22 +79,16 @@ export function logoutUser() {
 export function protectedTest() {
   // validate the user's token and see if they are authorized
   return function(dispatch) {
-    console.log('running protectedTest');
     axios.get(`${API_URL}/auth/protected`, {
       headers: {'Authorization': cookie.load('token')},
     })
     .then((response) => {
-      console.log('protectedTest passed');
-      console.log(response);
       dispatch({
         type: C.PROTECTED_TEST,
         payload: response.data.content,
       });
     })
     .catch((error) => {
-      console.log('sneaky! you aren\'t actually logged in.');
-      console.log(error);
-      console.log(error.response);
       errorHandler(dispatch, error.response, C.AUTH_ERROR);
     });
   };

@@ -1,15 +1,15 @@
 /* global describe it */
-import React from 'react';
-import {expect} from 'chai';
-import {mount} from 'enzyme';
-import {Redirect} from 'react-router';
-import sinon from 'sinon';
-import requireAuth from '../../../src/components/containers/AuthenticationContainer';
+
 import {createStore} from 'redux';
-import {Provider} from 'react-redux';
-import reducers from '../../../src/reducers/index';
+import {expect} from 'chai';
 import jsdom from 'jsdom';
-import {BrowserRouter, MemoryRouter, Route, Switch} from 'react-router-dom';
+import {MemoryRouter} from 'react-router-dom';
+import {mount} from 'enzyme';
+import {Provider} from 'react-redux';
+import React from 'react';
+import {Redirect} from 'react-router';
+import reducers from '../../../src/reducers/index';
+import requireAuth from '../../../src/components/containers/AuthenticationContainer';
 
 const doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
 global.document = doc;

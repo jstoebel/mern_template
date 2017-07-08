@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Field} from 'redux-form';
+
 import {Alert} from 'react-bootstrap';
+import {Field} from 'redux-form';
 
 class Login extends Component {
   handleFormSubmit(formProps) {
