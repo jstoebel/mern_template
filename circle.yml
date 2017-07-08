@@ -6,6 +6,7 @@ machine:
 test:
   override:
     - mv .env.example .env
+    - npm rebuild node-sass
     - npm run lint
     - npm run buildClient
     - npm run buildServer
