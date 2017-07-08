@@ -1,8 +1,8 @@
 import React from 'react';
 // import {IndexRoute} from 'react-router';
-import {Route, IndexRoute} from 'react-router';
+import {IndexRoute, Route} from 'react-router';
 
-console.log("testing router methods");
+console.log('testing router methods');
 console.log(`Route ${Route !== undefined}`);
 console.log(`IndexRoute ${IndexRoute !== undefined}`);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import App from './components/ui/app';
 import HomePage from './components/pages/home-page';
@@ -11,13 +11,13 @@ import requireAuth from './components/containers/AuthenticationContainer';
 import NotFoundPage from './components/pages/not-found-page';
 
 import C from './constants';
-import {createStore, applyMiddleware} from 'redux';
+import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reduxThunk from 'redux-thunk';
 import reducers from './reducers/index';
 import cookie from 'react-cookie';
 
-import startingState from './initialState.json'
+import startingState from './initialState.json';
 
 /* set up of store
   1) pull state from browser

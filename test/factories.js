@@ -1,4 +1,4 @@
-let User = require('../server/models/User')
+let User = require('../server/models/User');
 
 let fg = require('factory-girl');
 let adapter = new fg.MongooseAdapter();
@@ -11,9 +11,9 @@ factory.define('user', User, {
   password: '123',
   profile: {
     firstName: 'Jacob',
-    lastName: 'Stoebel'
+    lastName: 'Stoebel',
   },
-  role: 'Member'
+  role: 'Member',
 
 });
 

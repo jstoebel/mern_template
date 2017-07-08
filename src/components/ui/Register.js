@@ -7,29 +7,29 @@ const renderField = (field) => {
     const style = {
       color: 'red',
       fontWeight: 'bold',
-    }
+    };
     return (
         <div>
           <input className="form-control" {...field.input}/>
           <div style={style} className="error">{field.meta.error}</div>
         </div>
-    )
+    );
   } else {
     return (
       <div>
         <input className="form-control" {...field.input}/>
       </div>
-    )
+    );
   }
-}
+};
 
 class Register extends Component {
-  
+
   constructor() {
-    super()
+    super();
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
-  
+
   handleFormSubmit(formProps) {
     this.props.registerUser(formProps);
   }

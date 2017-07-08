@@ -4,10 +4,9 @@ import {expect} from 'chai';
 import factory from '../factories';
 import User from '../../server/models/User';
 
-let testPw = '123'
+let testPw = '123';
 
 describe('User Model', () => {
-
   let testUser;
   beforeEach((done) => {
     // build a user but don't persist
@@ -15,17 +14,16 @@ describe('User Model', () => {
       .then((user) => {
         testUser = user;
         done();
-      })
-  }) // beforeEach
+      });
+  }); // beforeEach
 
   afterEach((done) => {
     User.remove({}, () => {
       done();
-    })
+    });
   }); // afterEach
 
   it('requires a unique email', (done) => {
-
     testUser.save((err) => {
       factory.create('user', {email: testUser.email})
         .then((user) => {
@@ -33,8 +31,7 @@ describe('User Model', () => {
         }).catch((err) => {
           expect(err.code).to.equal(11000);
           done();
-        })
-    })
+        });
+    });
   });
-
 });

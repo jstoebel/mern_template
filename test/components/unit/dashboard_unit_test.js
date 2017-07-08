@@ -16,19 +16,18 @@ describe('<Dashboard/>', () => {
   beforeEach((done) => {
     const protectedTestSpy = sinon.spy();
     wrapper = mount(<Dashboard protectedTest={protectedTestSpy}/> );
-    done()
-  })
+    done();
+  });
 
   it('calls protectedTest', (done) => {
-    expect(wrapper.props().protectedTest.calledOnce).to.equal(true)
-    done()
-  })
-  
+    expect(wrapper.props().protectedTest.calledOnce).to.equal(true);
+    done();
+  });
+
   it('renders content', (done) => {
-    const content = 'this is some content'
-    wrapper.setProps({content: content})
+    const content = 'this is some content';
+    wrapper.setProps({content: content});
     expect(wrapper.find('p').first().text()).to.equal(content);
-    done()
-  })
-  
-})
+    done();
+  });
+});

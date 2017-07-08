@@ -6,9 +6,8 @@ import {protectedTest} from '../../actions';
 
 export default function(ComposedComponent) {
   class Authentication extends Component {
-    
+
     render() {
-      
       /*
         lazy auth: just check the state in the store. We don't need to hit the server
         until we are actually trying to access a service. Why hit the server
