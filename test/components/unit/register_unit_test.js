@@ -4,6 +4,7 @@ import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import {Field} from 'redux-form';
 import sinon from 'sinon';
+import {Alert} from 'react-bootstrap'
 import Register from '../../../src/components/ui/Register';
 
 describe('<Register/>', () => {
