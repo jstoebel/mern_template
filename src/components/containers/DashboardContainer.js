@@ -17,7 +17,7 @@ const mapStateToProps = (state) => {
 */
 
 const mergeProps = (stateProps, dispatchProps, ownProps) =>
-	Object.assign({}, stateProps, dispatchProps, ownProps);
+  Object.assign({}, stateProps, dispatchProps, ownProps);
 
 
 export default connect(mapStateToProps, actions, mergeProps)(Dashboard);
