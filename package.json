@@ -13,7 +13,8 @@
         "buildServer": "babel server -d dist --presets es2015",
         "serve": "node dist/index.js",
         "test": "env NODE_ENV=test mocha --compilers js:node_modules/babel-register --require babel-polyfill --reporter spec --timeout 2000 --recursive",
-        "lint": "node_modules/.bin/eslint ."
+        "lint": "node_modules/.bin/eslint .",
+        "herokuSetup": "node ./heroku_setup.js"
     },
     "dependencies": {
         "async": "^2.0.0-rc.4",
