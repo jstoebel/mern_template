@@ -20,66 +20,101 @@ const optionDefinitions = [
 
 const options = commandLineArgs(optionDefinitions);
 
-const reportSuccess = function(result) {
+const handleSuccess = function(result) {
     // prints results from stdout and stderr
 
     const stdout = result.stdout;
     console.log(`${emoji.get('white_check_mark')} ${chalk.green(stdout)}`);
 };
 
-const reportError = function(err) {
+const handleError = function(err) {
     console.log(`${emoji.get('heavy_exclamation_mark')} ${chalk.red.bold(err)}`);
+    process.exit();
+};
+
+const handle = function(promise) {
+    promise.then(handleSuccess).catch(handleError);
+};
+
+const mongoSetup = function() {
+    return exec('heroku addons:create mongolab');
+};
+
+const auth0Setup = function() {
+    return exec('heroku addons:create auth0:free');
+};
+
+const envVarsSetup = function() {
+
+    const buffer = randomBytes(48);
+    const token = buffer.toString('hex');
+    const vars = varsToPass.map(function(varName) {
+      return `${varName}=${process.env[varName]}`;
+    });
+
+    vars.push(`SESSION_SECRET=${token}`);
+    return exec(`heroku config:set ${vars}`);
 };
 
 console.log(`Creating your heroku instance for ${options.name}...`);
+
 exec(`heroku apps:create ${options.name}`)
-    .then(function(result) {
-        // created new app!
-        reportSuccess(result);
-    }).then(function() {
-        // next spin up MongoLab
-        console.log('creating MongoLab instance...');
-        exec('heroku addons:create mongolab')
-            .then(function(result) {
-                // created MongoLab instance
-                reportSuccess(result);
-            })
-            .then(function() {
-                // next add app secret
-                randomBytes(48, function(err, buffer) {
-                  const token = buffer.toString('hex');
-                  console.log('adding enviornment variables...');
-                  // process this object into a key/value string
+    .then(handleSuccess)
+    .then(function() {
+        handle(mongoSetup());
+        handle(auth0Setup());
+        handle(envVarsSetup());
+    }).catch(handleError);
 
-                  const vars = varsToPass.map(function(varName) {
-                    return `${varName}=${process.env[varName]}`;
-                  });
 
-                  vars.push(`SESSION_SECRET=${token}`);
+// exec(`heroku apps:create ${options.name}`)
+//     .then(function(result) {
+//         // created new app!
+//         reportSuccess(result);
+//     }).then(function() {
+//         // next spin up MongoLab
+//         console.log('creating MongoLab instance...');
+//         exec('heroku addons:create mongolab')
+//             .then(function(result) {
+//                 // created MongoLab instance
+//                 reportSuccess(result);
+//             })
+//             .then(function() {
+//                 // next add app secret
+//                 randomBytes(48, function(err, buffer) {
+//                   const token = buffer.toString('hex');
+//                   console.log('adding enviornment variables...');
+//                   // process this object into a key/value string
 
-                  exec(`heroku config:set ${vars}`)
-                    .then(function(result) {
-                        // added config vars
-                        reportSuccess(result);
-                    })
-                    .then(function() {
-                        // finished successfully!
-                        console.log(`${emoji.get('rocket')} ${chalk.green.bold(`${options.name} created successfully!`)}`);
-                    }).catch(function(err) {
-                        // failed to set session secret
-                        reportError(err);
-                        process.exit();
-                    });
-                });
-            })
-            .catch(function(err) {
-                // failed to create MongoLab instance
-                reportError(err);
-                process.exit();
-            });
-    })
-    .catch(function(err) {
-        // failed to create new app
-        reportError(err);
-        process.exit();
-    });
+//                   const vars = varsToPass.map(function(varName) {
+//                     return `${varName}=${process.env[varName]}`;
+//                   });
+
+//                   vars.push(`SESSION_SECRET=${token}`);
+
+//                   exec(`heroku config:set ${vars}`)
+//                     .then(function(result) {
+//                         // added config vars
+//                         reportSuccess(result);
+//                     })
+//                     .then(function() {
+//                         // finished successfully!
+//                         console.log(`${emoji.get('rocket')} ${chalk.green.bold(`${options.name} created successfully!`)}`);
+//                     }).catch(function(err) {
+//                         // failed to set session secret
+//                         reportError(err);
+//                         process.exit();
+//                     });
+//                 });
+//             })
+//             .catch(function(err) {
+//                 // failed to create MongoLab instance
+//                 reportError(err);
+//                 process.exit();
+//             });
+//     })
+//     .catch(function(err) {
+//         // failed to create new app
+//         reportError(err);
+//         process.exit();
+//     });
