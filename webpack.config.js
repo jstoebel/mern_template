@@ -1,5 +1,7 @@
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
+let DefinePlugin = require('webpack').DefinePlugin;
+let allowedEnvVars = require('./clientVars');
 
 process.traceDeprecation = true; // when something is deprecated, tell me where.
 
@@ -30,6 +32,10 @@ module.exports = {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'}),
       },
+      {
+          test: /\.svg$/,
+          loader: 'svg-inline-loader'
+      },
     ],
   },
   plugins: [
@@ -37,6 +43,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: `${__dirname}/public/build/index.html`,
       template: `${__dirname}/src/index.html`,
+    }),
+    new DefinePlugin({
+      CONFIG: allowedEnvVars,
     }),
   ],
 };

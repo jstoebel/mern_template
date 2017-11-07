@@ -1,13 +1,14 @@
 import history from '../history';
 import auth0 from 'auth0-js';
-// import { AUTH_CONFIG } from './auth0-variables';
+
+console.log(CONFIG)
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
-    domain: process.env.AUTH_DOMAIN,
-    clientID: process.env.AUTH_CLIENT_ID,
-    redirectUri: AUTH_CONFIG.callbackUrl,
-    audience: `https://${process.env.AUTH_DOMAIN}/userinfo`,
+    domain: CONFIG.AUTH_DOMAIN,
+    clientID: CONFIG.AUTH_CLIENT_ID,
+    redirectUri: CONFIG.callbackUrl,
+    audience: `https://${CONFIG.AUTH_DOMAIN}/userinfo`,
     responseType: 'token id_token',
     scope: 'openid'
   });
@@ -27,9 +28,9 @@ export default class Auth {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
-        history.replace('/home');
+        history.replace('/dashboard');
       } else if (err) {
-        history.replace('/home');
+        history.replace('/');
         console.log(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
       }

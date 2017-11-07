@@ -16,7 +16,7 @@ const masterRouter = express.Router();
 const apiRouter = express.Router();
 apiRouter.post('/auth/register', controllers.authentication.register);
 apiRouter.post('/auth/login', requireLogin, controllers.authentication.login);
-apiRouter.get('/auth/protected', requireAuth, controllers.authentication.checkToken);
+apiRouter.get('/auth/protected', controllers.authentication.checkToken);
 
 masterRouter.use('/api', apiRouter);
 masterRouter.all('/*', controllers.home.index);

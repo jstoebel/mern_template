@@ -28,7 +28,6 @@ router
  │    │    │    └── <anonymous>                    /                                                           POST
  │    │    │   
  │    │    └── bound dispatch                      /auth/protected                                             GET
- │    │         ├── authenticate                   /                                                           GET
  │    │         └── <anonymous>                    /                                                           GET
  │    │        
  │    │   
