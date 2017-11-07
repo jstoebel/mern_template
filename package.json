@@ -78,6 +78,7 @@
         "redux-form": "^6.8.0",
         "redux-thunk": "^2.2.0",
         "request": "^2.72.0",
+        "require": "^2.4.20",
         "require.all": "^2.0.3",
         "sinon": "^2.1.0",
         "source-map": "^0.6.1",
